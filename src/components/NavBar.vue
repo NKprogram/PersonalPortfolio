@@ -298,7 +298,7 @@ body {
   }
   
   .mobile-menu-toggle {
-    display: block; /* Show on mobile */
+    display: block; 
   }
   
   .nav-menu {
@@ -342,3 +342,4 @@ body {
   }
 }
 </style>
+

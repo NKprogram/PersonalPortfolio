@@ -1,65 +1,241 @@
 <template>
-    <section class="relative w-full" data-aos="zoom-in-up">
-        <div class="absolute top-0 inset-x-0 h-64 flex items-start">
-            <div class="h-24 w-2/3 bg-gradient-to-br from-[#570cac] blur-2xl invisible opacity-40"></div>
-            <div class="h-20 w-3/5 bg-gradient-to-r from-[#670ccf] opqcity-40 blur-2xl"></div>
+  <section class="intro-section">
+    <div class="content-container">
+      <h1 class="intro-heading">
+        <span class="intro-text">Hi There, I'm</span> 
+        <span class="neon-text">Nuuradin Korane</span> 
+        <span class="animated-emoji">😎</span>
+      </h1>
+      <div class="titles-container">
+        <div class="glitch-wrapper">
+          <div class="glitch-text" :data-text="titles[currentTitleIndex]">
+            {{ titles[currentTitleIndex] }}
+          </div>
         </div>
-        <div class="w-full px-5 sm:px-8 md:px-12 lg:px-8 max-w-screen-lg lg:max-w-screen-xl mx-auto relative">
-            <div class="grid lg:grid-cols-2 gap-10 xl:gap-14 relative pt-24 lg:max-w-none max-w-2xl md:max-w-3xl mx-auto">
-                <div class="lg:py-6">
-                    <div class="text-center lg:text-left">
-                        <h1 class="pt-4 text-white font-bold text-4xl md:text-5xl lg:text-6xl">
-                            Hi, I'm <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-pink-500">
-                                Nuuradin Korane
-                            </span>😁
-                        </h1>
-                    </div>
-                    <p class="text-gray-300 pt-8 text-center lg:text-left mx-auto max-w-xl">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                         Explicabo eius laboriosam ratione corporis tempore facilis, 
-                         laborum, debitis dolorem accusamus accusantium modi obcaecati? 
-                    </p>
-                    <div class="flex items-center gap-3 pt-9 flex-col sm:flex-row sm:w-max sm:mx-auto lg:mx-0">
-                        <button class="px-6 md:px-7 py-3 rounded-full relative group w-full sm:w-max flex justify-center">
-                            <span class="absolute inset-0 rounded-3xl group-hover:scale-105 origin-center transition-all ease-in-out bg-primary
-                            border-2 border-transparent"></span>
-                            <span class="relative flex items-center justify-center text-white">Hire Me</span>
-                        </button>
-                        <button class=" border border-primary px-6 md:px-7 py-3 rounded-full relative group w-full sm:w-max flex justify-center">
-                            <div class="hover:scale-105 transition-all ease-in-out flex justify-center items-center relative">
-                            <div class="svg-container">
-                                <svg class="download-icon" width="18" height="22" viewBox="0 0 18 22" fill="none" xmlns="http://www.w3.org/2000/svg" >
-                                    <path class="download-arrow" d="M13 9L9 13M9 13L5 9M9 13V1" stroke="#f59e0b"
-                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                    />
-                                    <path d="M1 17V18C1 18.7956 1.31607 19.5587 1.87868 20.1213C2.44129
-                                    20.6839 3.20435 21 4 21H14C14.7956 21 15.5587 20.6839 16.1213
-                                    20.1213C16.6839 19.5587 17 18.7956 17 18V17"
-                                    stroke="#f59e0b" stroke-width="2" stroke-linecap="round" />
-                                </svg>
-                                <div class="download-loader text-white hidden"></div>
-                            </div>
-                            <a href="/resume.pdf" download="resume.pdf" class="pl-2 text-primary"> Download resume</a>
-                            </div>
-                        </button>
-                    </div>
-                </div>
-                <div class="lg:h-full md:flex">
-                    <div class="flex w-full h-96 min-h-[24rem] lg:min-h-[none] lg:w-full lg:h-full items-center relative">
-                        <div class="absolute z-0 top-1/2 -translate-y-1/2 w-5/6 right-0 h-[calc(80%+20px)] bg-gradient-to-tr opacity-25 from-[#570cac] to-primary blur-2xl"></div>
-                        <div class="absolute h-full z-10 p-2 -translate-y-1/2 top-1/2 lg:right-3 md:right-40 sm:right-16 rounded-full shadow-lg border border-primary">
-                            <img src="@/assets/vue.svg" alt="Hero pic" width="500" height="auto" loading="lazy"
-                            class="w-full h-full rounded-full object-cover"
-                            >
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+      </div>
+    </div>
+  </section>
 </template>
-<script setup>
-import AOS from 'aos';
-import 'aos/dist/aos.css';
-AOS.init();
+
+<script>
+export default {
+  name: 'IntroSection',
+  data() {
+    return {
+      titles: [
+        "Software Developer",
+        "UI/UX Enthusiast",
+        "Blockchain Explorer"
+      ],
+      currentTitleIndex: 0,
+      titleInterval: null
+    }
+  },
+  mounted() {
+    this.startTitleAnimation();
+    this.startEmojiAnimation();
+  },
+  beforeUnmount() {
+    clearInterval(this.titleInterval);
+  },
+  methods: {
+    startTitleAnimation() {
+      this.titleInterval = setInterval(() => {
+        this.currentTitleIndex = (this.currentTitleIndex + 1) % this.titles.length;
+      }, 3000);
+    },
+    startEmojiAnimation() {
+      const emoji = document.querySelector('.animated-emoji');
+      if (emoji) {
+        setInterval(() => {
+          // Apply a small bounce animation
+          emoji.style.animation = 'none';
+          setTimeout(() => {
+            emoji.style.animation = 'emoji-bounce 0.5s ease';
+          }, 10);
+        }, 3000);
+      }
+    }
+  }
+}
 </script>
+
+<style scoped>
+.intro-section {
+  /* The section fills the viewport */
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  position: relative;
+
+  /* 
+    Make the empty space in this section pass mouse events 
+    through to the canvas behind it. 
+  */
+  pointer-events: none;
+}
+
+.content-container {
+  /* Re-enable pointer events on the actual text area */
+  pointer-events: auto;
+  text-align: center;
+  z-index: 10;
+  position: relative;
+}
+
+/* The rest of your existing styles remain unchanged */
+.intro-heading {
+  font-size: 3.5rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
+  position: relative;
+}
+
+.intro-text {
+  color: #ffffff;
+  font-weight: normal;
+  display: inline;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+}
+
+@media (min-width: 768px) {
+  .intro-heading {
+    font-size: 5rem;
+  }
+}
+
+.neon-text {
+  font-weight: bold;
+  background: linear-gradient(90deg, #fbff00, #ff0000);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 
+    0 0 5px rgba(255, 255, 0, 0.7),
+    0 0 10px rgba(255, 255, 0, 0.5),
+    0 0 15px rgba(255, 255, 0, 0.3),
+    0 0 20px rgba(255, 255, 0, 0.2);
+  animation: neon-pulse 1.5s infinite alternate;
+  display: inline;
+}
+
+.animated-emoji {
+  display: inline-block;
+  font-size: 4rem;
+  margin-left: 0.5rem;
+  position: relative;
+  top: -5px;
+}
+
+.titles-container {
+  height: 4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.glitch-wrapper {
+  position: relative;
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.glitch-text {
+  position: relative;
+  color: #ffffff !important;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+  animation: glitch-skew 1s infinite linear alternate-reverse;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  color: #ffffff;
+}
+
+.glitch-text::before {
+  left: 2px;
+  text-shadow: -2px 0 #ff00c1;
+  clip: rect(44px, 450px, 56px, 0);
+  animation: glitch-anim 5s infinite linear alternate-reverse;
+}
+
+.glitch-text::after {
+  left: -2px;
+  text-shadow: -2px 0 #00fff9, 2px 2px #ff00c1;
+  clip: rect(44px, 450px, 56px, 0);
+  animation: glitch-anim2 5s infinite linear alternate-reverse;
+}
+
+@keyframes neon-pulse {
+  from {
+    text-shadow: 
+      0 0 5px rgba(255, 255, 0, 0.7),
+      0 0 10px rgba(255, 255, 0, 0.5),
+      0 0 15px rgba(255, 255, 0, 0.3),
+      0 0 20px rgba(255, 255, 0, 0.2);
+  }
+  to {
+    text-shadow: 
+      0 0 5px rgba(255, 255, 0, 0.9),
+      0 0 10px rgba(255, 255, 0, 0.8),
+      0 0 15px rgba(255, 255, 0, 0.6),
+      0 0 20px rgba(255, 255, 0, 0.4),
+      0 0 25px rgba(255, 255, 0, 0.3);
+  }
+}
+
+@keyframes emoji-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+@keyframes glitch-anim {
+  0% {
+    clip: rect(29px, 9999px, 63px, 0);
+    transform: skew(0.52deg);
+  }
+  /* omitted frames for brevity */
+  100% {
+    clip: rect(68px, 9999px, 95px, 0);
+    transform: skew(0.84deg);
+  }
+}
+
+@keyframes glitch-anim2 {
+  0% {
+    clip: rect(74px, 9999px, 71px, 0);
+    transform: skew(0.11deg);
+  }
+  /* omitted frames for brevity */
+  100% {
+    clip: rect(57px, 9999px, 14px, 0);
+    transform: skew(0.31deg);
+  }
+}
+
+@keyframes glitch-skew {
+  0% { transform: skew(1deg); }
+  10% { transform: skew(-1deg); }
+  20% { transform: skew(0deg); }
+  30% { transform: skew(-1deg); }
+  40% { transform: skew(-1deg); }
+  50% { transform: skew(3deg); }
+  60% { transform: skew(1deg); }
+  70% { transform: skew(0deg); }
+  80% { transform: skew(-2deg); }
+  90% { transform: skew(1deg); }
+  100% { transform: skew(0deg); }
+}
+</style>

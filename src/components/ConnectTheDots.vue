@@ -27,7 +27,7 @@ const LINE_WIDTH = 0.4;
 // Number of stars for mobile vs desktop
 const NUM_STARS = {
   mobile: 35,
-  desktop: 250
+  desktop: 275
 };
 
 // Canvas reference
