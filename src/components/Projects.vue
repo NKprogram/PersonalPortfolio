@@ -40,10 +40,10 @@
   </template>
   
   <script>
-  import vueLogo from '@/assets/vue.svg'; // Example import for your placeholder image
+  import vueLogo from '@/assets/vue.svg'; 
   
   export default {
-    name: 'Projects', // Renamed component name
+    name: 'Projects',
     data() {
       return {
         projects: [
@@ -91,11 +91,8 @@
   
   <style scoped>
   .projects-section {
-    /* Adjust spacing if desired */
     padding: 4rem 0;
     position: relative;
-  
-    /* Same pointer-events approach if you have a background/canvas behind */
     pointer-events: none;
     display: flex;
     align-items: center;
@@ -103,7 +100,7 @@
     flex-direction: column;
   }
   
-  /* Re-enable pointer events in the container */
+
   .content-container {
     pointer-events: auto;
     z-index: 10;
@@ -121,14 +118,14 @@
     margin-bottom: 2rem;
   }
   
-  /* Grid layout for the cards */
+
   .cards-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 2rem;
   }
   
-  /* Card styling */
+
   .card {
     background: #1e1e1e;
     border-radius: 8px;
@@ -141,7 +138,7 @@
     transform: translateY(-5px);
   }
   
-  /* Image styling within cards */
+ 
   .card-image {
     width: 100%;
     height: 150px;

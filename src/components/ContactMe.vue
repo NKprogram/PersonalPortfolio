@@ -15,7 +15,7 @@
             />
           </div>
   
-          <!-- Email Field -->
+        
           <div class="form-group">
             <label for="email">Email</label>
             <input
@@ -60,11 +60,7 @@
     },
     methods: {
       handleSubmit() {
-        // You can replace this with your actual submission logic,
-        // e.g., an API call, email service, etc.
         console.log('Form data submitted:', this.formData);
-  
-        // Optionally, clear the form after submission
         this.formData.name = '';
         this.formData.email = '';
         this.formData.message = '';
@@ -77,7 +73,6 @@
   .contact-section {
     padding: 4rem 0;
     position: relative;
-    /* Follow your same pointer-events approach if desired */
     pointer-events: none;
     display: flex;
     align-items: center;
@@ -101,7 +96,6 @@
     margin-bottom: 2rem;
   }
   
-  /* Contact Form Styling */
   .contact-form {
     display: flex;
     flex-direction: column;

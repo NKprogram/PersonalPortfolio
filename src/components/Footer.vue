@@ -25,11 +25,6 @@
     text-align: center;
     padding: 1rem;
     position: relative;
-    /* If you want it stuck to the bottom at all times (optional):
-       position: fixed;
-       left: 0;
-       bottom: 0;
-    */
   }
   
   .footer-content {

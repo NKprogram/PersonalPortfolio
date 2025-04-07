@@ -7,7 +7,6 @@
       <div class="logo">
         NK
       </div>
-      <!-- Mobile Toggle Button -->
       <div class="mobile-menu-toggle">
         <button
           type="button"
@@ -82,7 +81,7 @@ const activeSection = ref('');
 // Scrolled state for navbar
 const isScrolled = ref(false);
 
-// Update active section based on hash change
+
 function updateActiveSection() {
   activeSection.value = window.location.hash || '';
 }
@@ -192,13 +191,13 @@ body {
   margin-left: -2%; 
 }
 
-/* Mobile menu toggle button container */
+
 .mobile-menu-toggle {
   display: none; 
   z-index: 30;
 }
 
-/* Navigation menu */
+
 .nav-menu {
   transition: all 0.3s ease;
 }

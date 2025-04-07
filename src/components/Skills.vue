@@ -11,7 +11,7 @@
           >
             <h3 class="category-title">{{ category.title }}</h3>
             <ul class="skills-list">
-              <!-- Loop through each skill in a category -->
+              <!-- Loop through skills in each category -->
               <li v-for="(skill, skillIndex) in category.items" :key="skillIndex">
                 {{ skill }}
               </li>
@@ -52,10 +52,8 @@
   
   <style scoped>
   .skills-section {
-    /* Match the spacing style from your other sections */
     padding: 4rem 0;
     position: relative;
-    /* If you follow the same approach as About or Projects */
     pointer-events: none;
     display: flex;
     align-items: center;
@@ -78,15 +76,13 @@
     font-size: 2rem;
     margin-bottom: 2rem;
   }
-  
-  /* A responsive grid for skill categories */
+
   .skills-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 2rem;
   }
   
-  /* Individual skill category cards */
   .skill-category {
     background: #1e1e1e;
     border-radius: 8px;
@@ -99,14 +95,13 @@
     transform: translateY(-5px);
   }
   
-  /* Category title styling */
+
   .category-title {
     margin-bottom: 1rem;
     font-size: 1.25rem;
     color: #ffffff;
   }
-  
-  /* Skills list styling */
+
   .skills-list {
     list-style: none;
     margin: 0;

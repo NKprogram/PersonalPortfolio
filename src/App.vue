@@ -1,7 +1,7 @@
 <template> 
   <div>
     <!-- The background. -->
-    <ConnectTheDots/>
+    <ConnectedStars/>
     <!--the Navigation bar-->
     <NavBar/>
      <!-- intro -->
@@ -26,7 +26,7 @@
 <script setup>
 import { defineAsyncComponent } from 'vue';
 //import components asynchronously
-const ConnectTheDots = defineAsyncComponent(()=>import('@/components/ConnectTheDots.vue'));
+const ConnectedStars= defineAsyncComponent(() => import('@/components/ConnectedStars.vue'));
 const NavBar = defineAsyncComponent(()=>import('@/components/NavBar.vue'));
 const IntroSection = defineAsyncComponent(()=>import('@/components/IntroSection.vue'));
 const AboutMe = defineAsyncComponent(()=>import('@/components/AboutMe.vue'));

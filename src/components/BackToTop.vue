@@ -24,7 +24,6 @@
     },
     methods: {
       handleScroll() {
-        // Show button once user scrolls 300px from top (adjust as needed)
         this.isVisible = window.scrollY > 300;
       },
       scrollToTop() {
@@ -42,7 +41,6 @@
     position: fixed;
     bottom: 2rem;
     right: 2rem;
-    /* Adjust size & style as desired */
     width: 50px;
     height: 50px;
     font-size: 2rem;
@@ -54,7 +52,7 @@
     border-radius: 50%;
     cursor: pointer;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    z-index: 999; /* ensure it’s above other elements */
+    z-index: 999; 
     transition: transform 0.2s ease;
   }
   

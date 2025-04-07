@@ -1,18 +1,19 @@
 <template>
   <section class="intro-section">
     <div class="content-container">
-      <h1 class="intro-heading">
-        <span class="intro-text">Hi There, I'm</span> 
-        <span class="neon-text">Nuuradin Korane</span> 
-        <span class="animated-emoji">😎</span>
+      <h1 class="animated-title">
+        Hello, I'm Nuuradin a passionate software developer
       </h1>
-      <div class="titles-container">
-        <div class="glitch-wrapper">
-          <div class="glitch-text" :data-text="titles[currentTitleIndex]">
-            {{ titles[currentTitleIndex] }}
-          </div>
+      <a href="#about" class="btn cosmic-btn">
+        <div id="container-stars">
+          <div id="stars"></div>
         </div>
-      </div>
+        <strong>Explore my portfolio</strong>
+        <div id="glow">
+          <div class="circle"></div>
+          <div class="circle"></div>
+        </div>
+      </a>
     </div>
   </section>
 </template>
@@ -22,47 +23,96 @@ export default {
   name: 'IntroSection',
   data() {
     return {
-      titles: [
-        "Software Developer",
-        "UI/UX Enthusiast",
-        "Blockchain Explorer"
-      ],
-      currentTitleIndex: 0,
-      titleInterval: null
-    }
+      originalText: "Hello, I'm Nuuradin a passionate software developer",
+      glitchTimeout: null,
+      mainAnimTimeout: null
+    };
   },
   mounted() {
-    this.startTitleAnimation();
-    this.startEmojiAnimation();
+    this.runMainAnimation();
+    this.scheduleGlitch();
+    this.scheduleRerun();
   },
-  beforeUnmount() {
-    clearInterval(this.titleInterval);
+  beforeDestroy() {
+    clearTimeout(this.glitchTimeout);
+    clearTimeout(this.mainAnimTimeout);
   },
   methods: {
-    startTitleAnimation() {
-      this.titleInterval = setInterval(() => {
-        this.currentTitleIndex = (this.currentTitleIndex + 1) % this.titles.length;
-      }, 3000);
+    //run the main animation on mount
+    runMainAnimation() {
+      const titleElement = document.querySelector('.animated-title');
+      if (!titleElement) return;
+      titleElement.textContent = '';
+      this.originalText.split(' ').forEach((word, index, array) => {
+        const wordSpan = document.createElement('span');
+        wordSpan.classList.add('animated-word');
+        word.split('').forEach(letter => {
+          const letterSpan = document.createElement('span');
+          letterSpan.classList.add('animated-element');
+          letterSpan.textContent = letter;
+          // Slight random delay so letters appear at staggered times
+          const delay = (Math.random() * 0.8).toFixed(2);
+          letterSpan.style.animationDelay = `${delay}s`;
+          wordSpan.appendChild(letterSpan);
+        });
+        titleElement.appendChild(wordSpan);
+        // Add a space (except after the last word)
+        if (index < array.length - 1) {
+          const spaceSpan = document.createElement('span');
+          spaceSpan.innerHTML = '&nbsp;';
+          spaceSpan.classList.add('word-space');
+          titleElement.appendChild(spaceSpan);
+        }
+      });
+      // Fade/slide in for all words
+      setTimeout(() => {
+        document.querySelectorAll('.animated-word').forEach(word => {
+          word.classList.add('animate');
+        });
+      }, 100);
     },
-    startEmojiAnimation() {
-      const emoji = document.querySelector('.animated-emoji');
-      if (emoji) {
-        setInterval(() => {
-          // Apply a small bounce animation
-          emoji.style.animation = 'none';
-          setTimeout(() => {
-            emoji.style.animation = 'emoji-bounce 0.5s ease';
-          }, 10);
-        }, 3000);
-      }
+
+    // glitch animation for the title
+    glitchAnimation() {
+      const titleElement = document.querySelector('.animated-title');
+      if (!titleElement) return;
+      titleElement.classList.add('glitch');
+      setTimeout(() => {
+        titleElement.classList.remove('glitch');
+      }, 300);
+    },
+
+    // Schedule the glitch animation every 5–6 seconds
+    scheduleGlitch() {
+      const glitchDelay = 3000 + Math.random() * 1000;
+      this.glitchTimeout = setTimeout(() => {
+        this.glitchAnimation();
+        this.scheduleGlitch();
+      }, glitchDelay);
+    },
+
+    // Schedule the main animation to rerun every 10–12 seconds
+    scheduleRerun() {
+      const mainDelay = 10000 + Math.random() * 2000;
+      this.mainAnimTimeout = setTimeout(() => {
+        this.runMainAnimation();
+        this.scheduleRerun();
+      }, mainDelay);
     }
   }
-}
+};
 </script>
 
-<style scoped>
+<style lang="scss">
+@font-face {
+  font-family: 'Neuropolitical';
+  src: url('@/assets/Fonts/Neuropolitical Rg.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 .intro-section {
-  /* The section fills the viewport */
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -70,172 +120,312 @@ export default {
   align-items: center;
   padding: 2rem;
   position: relative;
-
-  /* 
-    Make the empty space in this section pass mouse events 
-    through to the canvas behind it. 
-  */
+  z-index: 10;
   pointer-events: none;
 }
 
 .content-container {
-  /* Re-enable pointer events on the actual text area */
+  text-align: center;
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   pointer-events: auto;
+}
+
+
+.animated-title {
+  color: white;
+  font-size: 56px;
+  margin: 0 0 2.5rem;
+  width: 100%;
   text-align: center;
-  z-index: 10;
+  font-family: 'Neuropolitical', sans-serif;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  min-height: 120px;
   position: relative;
 }
 
-/* The rest of your existing styles remain unchanged */
-.intro-heading {
-  font-size: 3.5rem;
-  text-align: center;
-  margin-bottom: 1.5rem;
-  line-height: 1.2;
-  position: relative;
+
+.glitch {
+  animation: glitchAnim 0.4s;
 }
 
-.intro-text {
-  color: #ffffff;
-  font-weight: normal;
-  display: inline;
-  text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
-}
-
-@media (min-width: 768px) {
-  .intro-heading {
-    font-size: 5rem;
+@keyframes glitchAnim {
+  0% {
+    transform: none;
+    opacity: 1;
+  }
+  20% {
+    transform: translate(-2px, 2px);
+    opacity: 0.9;
+  }
+  40% {
+    transform: translate(2px, -2px);
+    opacity: 1;
+  }
+  60% {
+    transform: translate(-1px, 1px);
+    opacity: 0.9;
+  }
+  80% {
+    transform: translate(1px, -1px);
+    opacity: 1;
+  }
+  100% {
+    transform: none;
+    opacity: 1;
   }
 }
 
-.neon-text {
-  font-weight: bold;
-  background: linear-gradient(90deg, #fbff00, #ff0000);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  text-shadow: 
-    0 0 5px rgba(255, 255, 0, 0.7),
-    0 0 10px rgba(255, 255, 0, 0.5),
-    0 0 15px rgba(255, 255, 0, 0.3),
-    0 0 20px rgba(255, 255, 0, 0.2);
-  animation: neon-pulse 1.5s infinite alternate;
-  display: inline;
-}
-
-.animated-emoji {
+.animated-word {
   display: inline-block;
-  font-size: 4rem;
-  margin-left: 0.5rem;
-  position: relative;
-  top: -5px;
+  margin: 0 0.25rem;
+  font-family: 'Neuropolitical', sans-serif;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
-.titles-container {
-  height: 4rem;
+.animated-word.animate {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.animated-element {
+  display: inline-block;
+  font-family: 'Neuropolitical', sans-serif;
+  animation: displayLetter 1.5s ease-in-out forwards;
+  opacity: 0;
+}
+
+.word-space {
+  display: inline-block;
+  width: 0.35em;
+}
+
+@keyframes displayLetter {
+  0% {
+    transform: translateY(5px);
+    color: white;
+    opacity: 0;
+  }
+  10% {
+    color: rgb(241, 12, 211);
+    opacity: 1;
+  }
+  20% {
+    color: white;
+    opacity: 0.5;
+    transform: translateY(0px);
+  }
+  50% {
+    color: rgb(86, 10, 138);
+    opacity: 1;
+    transform: translateY(1px);
+  }
+  60% {
+    color: white;
+    opacity: 1;
+    transform: translateY(1px);
+  }
+  100% {
+    transform: translateY(0);
+    color: white;
+    opacity: 1;
+  }
+}
+
+/* Responsive design for mobile and desktop */
+@media (max-width: 768px) {
+  .animated-title {
+    font-size: 32px;
+  }
+  .btn {
+    width: 12rem;
+    height: 3rem;
+  }
+  .btn strong {
+    font-size: 12px;
+    letter-spacing: 2px;
+  }
+}
+
+@media (min-width: 769px) {
+  .animated-title {
+    font-size: 56px;
+  }
+  .btn {
+    width: 15rem;
+    height: 3.5rem;
+  }
+  .btn strong {
+    font-size: 14px;
+    letter-spacing: 3px;
+  }
+}
+
+
+.btn {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 1rem;
-}
-
-.glitch-wrapper {
+  width: 15rem;
+  height: 3.5rem;
+  overflow: hidden;
+  cursor: pointer;
+  border-radius: 5rem;
+  border: double 4px transparent;
+  background-image: linear-gradient(#212121, #212121),
+    linear-gradient(
+      137.48deg,
+      #ffdb3b 10%,
+      #fe53bb 45%,
+      #8f51ea 67%,
+      #0044ff 87%
+    );
+  background-origin: border-box;
+  background-clip: content-box, border-box;
   position: relative;
-  font-size: 2.5rem;
-  font-weight: bold;
-  text-align: center;
+  text-decoration: none;
+  transition: 0.5s;
+  animation: gradientCycle 5s ease infinite;
 }
 
-.glitch-text {
-  position: relative;
-  color: #ffffff !important;
-  text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
-  animation: glitch-skew 1s infinite linear alternate-reverse;
-}
-
-.glitch-text::before,
-.glitch-text::after {
-  content: attr(data-text);
+#container-stars {
   position: absolute;
-  top: 0;
-  left: 0;
+  z-index: -1;
   width: 100%;
   height: 100%;
+  overflow: hidden;
+  border-radius: 5rem;
+  transition: 0.5s;
+}
+
+strong {
+  z-index: 2;
+  font-family: 'Neuropolitical', sans-serif;
+  letter-spacing: 5px;
   color: #ffffff;
+  text-shadow: 0 0 4px white;
 }
 
-.glitch-text::before {
-  left: 2px;
-  text-shadow: -2px 0 #ff00c1;
-  clip: rect(44px, 450px, 56px, 0);
-  animation: glitch-anim 5s infinite linear alternate-reverse;
+#glow {
+  position: absolute;
+  display: flex;
+  width: 12rem;
 }
 
-.glitch-text::after {
-  left: -2px;
-  text-shadow: -2px 0 #00fff9, 2px 2px #ff00c1;
-  clip: rect(44px, 450px, 56px, 0);
-  animation: glitch-anim2 5s infinite linear alternate-reverse;
+.circle {
+  width: 100%;
+  height: 30px;
+  filter: blur(2rem);
+  animation: pulseGlow 4s infinite;
+  z-index: -1;
 }
 
-@keyframes neon-pulse {
+.circle:nth-of-type(1) {
+  background: rgba(254, 83, 186, 0.636);
+}
+
+.circle:nth-of-type(2) {
+  background: rgba(142, 81, 234, 0.704);
+}
+
+.btn:hover {
+  transform: scale(1.1);
+}
+
+.btn:hover #container-stars {
+  background-color: #212121;
+  z-index: 1;
+}
+
+.btn:active {
+  border: double 4px #fe53bb;
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+  animation: none;
+}
+
+#stars {
+  position: relative;
+  width: 200rem;
+  height: 200rem;
+  background: transparent;
+}
+
+#stars::after {
+  content: "";
+  position: absolute;
+  top: -10rem;
+  left: -100rem;
+  width: 100%;
+  height: 100%;
+  animation: animStarRotate 90s linear infinite;
+  background-image: radial-gradient(#ffffff 1px, transparent 1%);
+  background-size: 50px 50px;
+}
+
+#stars::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -50%;
+  width: 170%;
+  height: 500%;
+  opacity: 0.5;
+  animation: animStar 60s linear infinite;
+  background-image: radial-gradient(#ffffff 1px, transparent 1%);
+  background-size: 50px 50px;
+}
+
+
+@keyframes animStar {
   from {
-    text-shadow: 
-      0 0 5px rgba(255, 255, 0, 0.7),
-      0 0 10px rgba(255, 255, 0, 0.5),
-      0 0 15px rgba(255, 255, 0, 0.3),
-      0 0 20px rgba(255, 255, 0, 0.2);
+    transform: translateY(0);
   }
   to {
-    text-shadow: 
-      0 0 5px rgba(255, 255, 0, 0.9),
-      0 0 10px rgba(255, 255, 0, 0.8),
-      0 0 15px rgba(255, 255, 0, 0.6),
-      0 0 20px rgba(255, 255, 0, 0.4),
-      0 0 25px rgba(255, 255, 0, 0.3);
+    transform: translateY(-135rem);
   }
 }
 
-@keyframes emoji-bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-15px); }
+@keyframes animStarRotate {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0);
+  }
 }
 
-@keyframes glitch-anim {
+@keyframes gradientCycle {
   0% {
-    clip: rect(29px, 9999px, 63px, 0);
-    transform: skew(0.52deg);
+    background-position: 0% 50%;
   }
-  /* omitted frames for brevity */
+  50% {
+    background-position: 100% 50%;
+  }
   100% {
-    clip: rect(68px, 9999px, 95px, 0);
-    transform: skew(0.84deg);
+    background-position: 0% 50%;
   }
 }
 
-@keyframes glitch-anim2 {
+@keyframes pulseGlow {
   0% {
-    clip: rect(74px, 9999px, 71px, 0);
-    transform: skew(0.11deg);
+    transform: scale(0.75);
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.7);
   }
-  /* omitted frames for brevity */
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+  }
   100% {
-    clip: rect(57px, 9999px, 14px, 0);
-    transform: skew(0.31deg);
+    transform: scale(0.75);
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
   }
-}
-
-@keyframes glitch-skew {
-  0% { transform: skew(1deg); }
-  10% { transform: skew(-1deg); }
-  20% { transform: skew(0deg); }
-  30% { transform: skew(-1deg); }
-  40% { transform: skew(-1deg); }
-  50% { transform: skew(3deg); }
-  60% { transform: skew(1deg); }
-  70% { transform: skew(0deg); }
-  80% { transform: skew(-2deg); }
-  90% { transform: skew(1deg); }
-  100% { transform: skew(0deg); }
 }
 </style>

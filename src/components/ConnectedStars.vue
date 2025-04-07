@@ -11,9 +11,9 @@ import { onMounted, onUnmounted, ref } from 'vue';
 // Constants
 const FPS = 60;
 // Dot bounce speed
-const BOUNCE_SPEED = 1;
+const BOUNCE_SPEED = 1.0;
 // Star-to-star maximum distance to connect
-const STAR_CONNECTION_RADIUS = 130;
+const STAR_CONNECTION_RADIUS = 120;
 // Distance from mouse to star for mouse→star lines
 const MOUSE_CONNECTION_RADIUS = 220;
 // How far from the mouse we see lines at all
@@ -27,7 +27,7 @@ const LINE_WIDTH = 0.4;
 // Number of stars for mobile vs desktop
 const NUM_STARS = {
   mobile: 35,
-  desktop: 275
+  desktop: 180
 };
 
 // Canvas reference
@@ -43,13 +43,39 @@ function isMobile() {
   return window.innerWidth <= 768;
 }
 
-// Generate random HSL color
-function getRandomColor() {
-  const hue = Math.floor(Math.random() * 360);
-  return `hsl(${hue}, 100%, 50%)`;
+// Generate a random hue
+function getRandomHue() {
+  return Math.floor(Math.random() * 360);
 }
 
-// Distance between two points
+// Convert HSL to RGB components
+function hslToRgb(h, s, l) {
+  const c = (1 - Math.abs(2 * l - 1)) * s;
+  const hh = h / 60;
+  const x = c * (1 - Math.abs(hh % 2 - 1));
+  let r = 0, g = 0, b = 0;
+  
+  if (0 <= hh && hh < 1)      { r = c; g = x; b = 0; }
+  else if (1 <= hh && hh < 2) { r = x; g = c; b = 0; }
+  else if (2 <= hh && hh < 3) { r = 0; g = c; b = x; }
+  else if (3 <= hh && hh < 4) { r = 0; g = x; b = c; }
+  else if (4 <= hh && hh < 5) { r = x; g = 0; b = c; }
+  else if (5 <= hh && hh < 6) { r = c; g = 0; b = x; }
+
+  const m = l - c / 2;
+  return {
+    r: Math.floor((r + m) * 255),
+    g: Math.floor((g + m) * 255),
+    b: Math.floor((b + m) * 255)
+  };
+}
+
+// Build rgba string from rgb and alpha
+function rgbaFromRgb(rgb, alpha) {
+  return `rgba(${rgb.r},${rgb.g},${rgb.b},${alpha})`;
+}
+
+// Distance between two points (actual distance)
 function distance(a, b) {
   const dx = b.x - a.x;
   const dy = b.y - a.y;
@@ -63,7 +89,7 @@ function getLineAlphaFromDistance(dist) {
   }
   const portion = dist / MAX_VISIBLE_RADIUS;
   if (portion < FADE_START_RATIO) {
-    return 1; // fully bright inside this range
+    return 1; 
   } 
   const fadeSpan = 1 - FADE_START_RATIO; 
   const fadeProgress = (portion - FADE_START_RATIO) / fadeSpan;
@@ -73,41 +99,7 @@ function getLineAlphaFromDistance(dist) {
 // Calculate the alpha value for the dot based on distance
 function getDotAlphaFromDistance(dist) {
   const lineAlpha = getLineAlphaFromDistance(dist); 
-  // clamp to at least MIN_DOT_ALPHA
   return Math.max(MIN_DOT_ALPHA, lineAlpha);
-}
-
-// Convert HSL to RGBA string
-function hslToRgba(hslStr, alpha) {
-  const match = /hsl\(\s*(\d+),\s*(\d+)%,\s*(\d+)%\)/.exec(hslStr);
-  if (!match) {
-    // fallback
-    return `rgba(255,255,255,${alpha})`;
-  }
-  const [ , hue, sat, light ] = match;
-  const h = parseFloat(hue);
-  const s = parseFloat(sat) / 100;
-  const l = parseFloat(light) / 100;
-
-  // HSL -> RGB
-  const c = (1 - Math.abs(2*l -1)) * s;
-  const hh = h / 60;
-  const x = c*(1 - Math.abs(hh % 2 - 1));
-  let r=0, g=0, b=0;
-  
-  if (0 <= hh && hh < 1)      { r = c; g = x; b = 0; }
-  else if (1 <= hh && hh < 2) { r = x; g = c; b = 0; }
-  else if (2 <= hh && hh < 3) { r = 0; g = c; b = x; }
-  else if (3 <= hh && hh < 4) { r = 0; g = x; b = c; }
-  else if (4 <= hh && hh < 5) { r = x; g = 0; b = c; }
-  else if (5 <= hh && hh < 6) { r = c; g = 0; b = x; }
-
-  const m = l - c/2;
-  r = Math.floor((r+m)*255);
-  g = Math.floor((g+m)*255);
-  b = Math.floor((b+m)*255);
-
-  return `rgba(${r},${g},${b},${alpha})`;
 }
 
 // Draw a line between two points
@@ -125,7 +117,7 @@ function drawStars(ctx) {
   for (const star of stars) {
     const distToMouse = distance(star, mouse);
     const dotAlpha = getDotAlphaFromDistance(distToMouse);
-    ctx.fillStyle = hslToRgba(star.color, dotAlpha);
+    ctx.fillStyle = rgbaFromRgb(star.color.rgb, dotAlpha);
 
     ctx.beginPath();
     ctx.arc(star.x, star.y, star.radius, 0, 2 * Math.PI);
@@ -133,7 +125,7 @@ function drawStars(ctx) {
   }
 }
 
-//connect stars to each other if they are close enough 
+// Connect stars to each other if they are close enough
 function connectStarToStar(ctx) {
   for (let i = 0; i < stars.length; i++) {
     const starA = stars[i];
@@ -143,9 +135,17 @@ function connectStarToStar(ctx) {
       const starB = stars[j];
       const alphaB = getLineAlphaFromDistance(distance(starB, mouse));
       if (alphaB <= 0) continue; 
-      if (distance(starA, starB) < STAR_CONNECTION_RADIUS) {
+
+      // Early exit using axis differences
+      const dx = starA.x - starB.x;
+      if (Math.abs(dx) > STAR_CONNECTION_RADIUS) continue;
+      const dy = starA.y - starB.y;
+      if (Math.abs(dy) > STAR_CONNECTION_RADIUS) continue;
+
+      const distSquared = dx * dx + dy * dy;
+      if (distSquared < STAR_CONNECTION_RADIUS * STAR_CONNECTION_RADIUS) {
         const lineAlpha = Math.min(alphaA, alphaB);
-        const lineColor = hslToRgba(starA.color, lineAlpha);
+        const lineColor = rgbaFromRgb(starA.color.rgb, lineAlpha);
         drawLine(ctx, starA.x, starA.y, starB.x, starB.y, lineColor);
       }
     }
@@ -157,10 +157,9 @@ function connectMouseToStars(ctx) {
   for (const star of stars) {
     const distToMouse = distance(star, mouse);
     if (distToMouse < MOUSE_CONNECTION_RADIUS) {
-      // Fade from 1 down to 0 near the edge of MOUSE_CONNECTION_RADIUS
       const lineAlpha = 1 - distToMouse / MOUSE_CONNECTION_RADIUS;
       if (lineAlpha > 0) {
-        const lineColor = hslToRgba(star.color, lineAlpha);
+        const lineColor = rgbaFromRgb(star.color.rgb, lineAlpha);
         drawLine(ctx, mouse.x, mouse.y, star.x, star.y, lineColor);
       }
     }
@@ -171,15 +170,11 @@ function connectMouseToStars(ctx) {
 function draw(ctx) {
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
   ctx.globalCompositeOperation = 'lighter';
-  // Draw stars
   drawStars(ctx);
-  // Connect stars to each other
   connectStarToStar(ctx);
-  // Connect mouse to stars
   connectMouseToStars(ctx);
 }
 
-// Animation update
 function update() {
   const centerX = canvas.value.width / 2;
   const centerY = canvas.value.height / 2;
@@ -187,18 +182,13 @@ function update() {
     const dx = centerX - s.x;
     const dy = centerY - s.y;
     const angle = Math.atan2(dy, dx);
-    // Change pull to push away from center
-    const push = 0.01;
-    s.vx -= push * Math.cos(angle);
-    s.vy -= push * Math.sin(angle);
-    // Small swirl force: perpendicular to the radial direction
-    const swirl = 0.005;
-    s.vx -= swirl * Math.sin(angle);
-    s.vy += swirl * Math.cos(angle);
+    const swirl = 0.01;
+    s.vx += swirl * Math.sin(angle);
+    s.vy -= swirl * Math.cos(angle);
     // Move the star
     s.x += (s.vx * BOUNCE_SPEED) / FPS;
     s.y += (s.vy * BOUNCE_SPEED) / FPS;
-    // Keep the existing edge bounce
+    // Bounce off edges
     if (s.x < 0 || s.x > canvas.value.width) s.vx = -s.vx;
     if (s.y < 0 || s.y > canvas.value.height) s.vy = -s.vy;
   }
@@ -211,19 +201,21 @@ function animate(ctx) {
   animationFrameId = requestAnimationFrame(() => animate(ctx));
 }
 
-// Initialize stars
+// Initialize stars with precomputed RGB values for improved performance
 function initStars(width, height) {
   stars = [];
   const numStars = isMobile() ? NUM_STARS.mobile : NUM_STARS.desktop;
 
   for (let i = 0; i < numStars; i++) {
+    const hue = getRandomHue();
+    const rgb = hslToRgb(hue, 1, 0.5); 
     stars.push({
       x: Math.random() * width,
       y: Math.random() * height,
       radius: Math.random() * 1 + 1,
       vx: Math.floor(Math.random() * 50) - 25,
       vy: Math.floor(Math.random() * 50) - 25,
-      color: getRandomColor(),
+      color: { hue, rgb }
     });
   }
 }
@@ -237,13 +229,11 @@ onMounted(() => {
 
   initStars(c.width, c.height);
 
-  // Track mouse
   c.addEventListener('mousemove', (e) => {
     mouse.x = e.clientX;
     mouse.y = e.clientY;
   });
 
-  // Resize handling
   window.addEventListener('resize', () => {
     c.width = window.innerWidth;
     c.height = window.innerHeight;
