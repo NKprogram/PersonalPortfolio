@@ -1,12 +1,9 @@
 <template>
-  <header
-    :class="['navbar', isScrolled ? 'scrolled' : '']"
-  >
+  <header :class="['navbar', isScrolled ? 'scrolled' : '']">
     <div class="navbar-container">
       <!-- Logo -->
-      <div class="logo">
-        NK
-      </div>
+      <div class="logo">NK</div>
+      <!-- Mobile Menu Toggle -->
       <div class="mobile-menu-toggle">
         <button
           type="button"
@@ -31,14 +28,8 @@
           </span>
         </button>
       </div>
-
-      <!-- Desktop Navigation Menu -->
-      <nav
-        :class="[
-          'nav-menu',
-          isMenuOpen ? 'menu-open' : 'menu-closed'
-        ]"
-      >
+      <!-- Desktop & Mobile Navigation Menu -->
+      <nav :class="['nav-menu', isMenuOpen ? 'menu-open' : 'menu-closed']">
         <ul class="shadow-button-set">
           <li 
             v-for="item in Menu" 
@@ -63,22 +54,17 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
-
-//menu items with colors
+// Menu items with colors
 const Menu = ref([
-  { name: 'About Me', href: '#about', color: '#3B82F6' },      // Blue
-  { name: 'Experience', href: '#experience', color: '#4F46E5' }, // Indigo
-  { name: 'Projects', href: '#projects', color: '#F59E0B' },   // Amber
-  { name: 'Skills', href: '#skills', color: '#10B981' },       // Emerald
-  { name: 'Contact', href: '#contact', color: '#EF4444' }      // Red
+  { name: 'About Me',    href: '#about',     color: '#3B82F6' }, // Blue
+  { name: 'Experience',  href: '#experience',color: '#4F46E5' }, // Indigo
+  { name: 'Projects',    href: '#projects',  color: '#F59E0B' }, // Amber
+  { name: 'Skills',      href: '#skills',    color: '#10B981' }, // Emerald
+  { name: 'Contact',     href: '#contact',   color: '#EF4444' }  // Red
 ]);
-
-
-// Mobile menu toggle state
+// Reactive variables for menu state and active section
 const isMenuOpen = ref(false);
-// Active section state
 const activeSection = ref('');
-// Scrolled state for navbar
 const isScrolled = ref(false);
 
 
@@ -86,7 +72,7 @@ function updateActiveSection() {
   activeSection.value = window.location.hash || '';
 }
 
-// Scroll to section and close mobile menu
+// Smoothly scroll to a section and close the mobile menu
 function scrollToSection(href) {
   isMenuOpen.value = false;
   const section = document.querySelector(href);
@@ -97,7 +83,7 @@ function scrollToSection(href) {
   activeSection.value = href;
 }
 
-// Check which section is in view on scroll
+// Determine which section is in view
 function handleScroll() {
   isScrolled.value = window.scrollY > 0;
   const sections = Menu.value.map(item => item.href.substring(1));
@@ -135,7 +121,7 @@ onUnmounted(() => {
 
 :root {
   --gradient: linear-gradient(45deg, #ff3366, #ff6b6b, #4834d4, #686de0);
-  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-bg: linear-gradient(180deg, rgba(20, 0, 40, 0.4), rgba(10, 0, 30, 0.7));
   --border: 1px solid rgba(255, 255, 255, 0.1);
   --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
 }
@@ -146,26 +132,23 @@ body {
 }
 
 
-/* Navbar styling */
 .navbar {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   padding: 0.8rem 5%; 
-  background: #000; 
-  border-bottom: var(--border);
   z-index: 1000;
   transition: padding 0.3s ease;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); 
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 1)); 
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  border-bottom: var(--border);
 }
 
 .navbar.scrolled {
-  padding: 0.5rem 5%; 
-  background: #000; 
+  padding: 0.5rem 5%;
 }
-
 
 .navbar-container {
   display: flex;
@@ -175,7 +158,6 @@ body {
   margin: 0 auto;
   position: relative;
 }
-
 
 .logo {
   font-family: 'SpaceNova', sans-serif; 
@@ -188,9 +170,8 @@ body {
   animation: gradient 8s linear infinite;
   background-size: 300%;
   letter-spacing: -0.5px;
-  margin-left: -2%; 
+  margin-left: -2%;
 }
-
 
 .mobile-menu-toggle {
   display: none; 
@@ -201,7 +182,6 @@ body {
 .nav-menu {
   transition: all 0.3s ease;
 }
-
 
 .shadow-button-set {
   margin: 0;
@@ -216,6 +196,7 @@ body {
   display: inline-flex;
   margin: 6px;
 }
+
 
 .shadow-button-set > li:is(:hover, :focus-within) > button:not(:active):not(.pressed) {
   --distance: -6px; 
@@ -238,13 +219,12 @@ body {
   cursor: pointer;
 }
 
-
-
 .shadow-button-set button.pressed {
-  --distance: -6px; 
+  --distance: -6px;
   color: #fff;
   opacity: 1 !important; 
 }
+
 
 @media (prefers-reduced-motion: no-preference) {
   .shadow-button-set button {
@@ -257,11 +237,9 @@ body {
   color: #fff;
 }
 
-
 .activeLink {
   opacity: 1 !important;
 }
-
 
 @font-face {
   font-family: 'Nebula';
@@ -277,7 +255,6 @@ body {
   font-style: normal;
 }
 
-
 @keyframes gradient {
   0% {
     background-position: 0% 50%;
@@ -289,7 +266,6 @@ body {
     background-position: 0% 50%;
   }
 }
-
 
 @media (max-width: 768px) {
   .navbar-container {
@@ -306,7 +282,7 @@ body {
     left: 0;
     width: 100%;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.95);
+    background: var(--glass-bg);         
     backdrop-filter: blur(10px);
     display: flex;
     justify-content: center;
@@ -319,6 +295,7 @@ body {
     pointer-events: none;
   }
   
+ 
   .menu-open {
     opacity: 1;
     visibility: visible;
@@ -341,4 +318,3 @@ body {
   }
 }
 </style>
-

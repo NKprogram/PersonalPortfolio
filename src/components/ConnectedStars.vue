@@ -1,8 +1,5 @@
 <template>
-  <canvas
-    ref="canvas"
-    class="fixed top-0 left-0 w-full h-full"
-  ></canvas>
+  <canvas ref="canvas" class="fixed top-0 left-0"></canvas>
 </template>
 
 <script setup>
@@ -10,46 +7,61 @@ import { onMounted, onUnmounted, ref } from 'vue';
 
 // Constants
 const FPS = 60;
-// Dot bounce speed
-const BOUNCE_SPEED = 1.0;
-// Star-to-star maximum distance to connect
-const STAR_CONNECTION_RADIUS = 120;
-// Distance from mouse to star for mouse→star lines
-const MOUSE_CONNECTION_RADIUS = 220;
-// How far from the mouse we see lines at all
-const MAX_VISIBLE_RADIUS = 320;
-// Minimum alpha for the dots
-const MIN_DOT_ALPHA = 0.2;
-// Minimum distance from mouse to star for the dot to be visible
-const FADE_START_RATIO = 0.8; 
-// Ratio of the distance at which the line starts to fade
-const LINE_WIDTH = 0.4;
-// Number of stars for mobile vs desktop
+const BOUNCE_SPEED = 2.0;            
+const STAR_CONNECTION_RADIUS = 150;  
+const MOUSE_CONNECTION_RADIUS = 250; 
+const LINE_WIDTH = 0.5;
+const AUTONOMOUS_MOVEMENT = 0.08;  
+const RETURN_FORCE = 0.01;         
+const STAR_TYPES = {
+  TINY: { min: 0.3, max: 1.0, count: 0.60 },  
+  SMALL: { min: 1.0, max: 1.8, count: 0.25 }, 
+  MEDIUM: { min: 1.8, max: 2.5, count: 0.10 }, 
+  LARGE: { min: 2.5, max: 3.5, count: 0.05 }  
+};
 const NUM_STARS = {
-  mobile: 35,
-  desktop: 180
+  mobile: 50,     
+  desktop: 210    
+};
+
+// Space theme colors
+const SPACE_COLORS = {
+  blueStar: { h: 210, s: 100, l: 70 },     
+  redStar: { h: 350, s: 100, l: 70 },      
+  yellowStar: { h: 45, s: 100, l: 80 },    
+  purpleStar: { h: 270, s: 100, l: 75 },  
+  cyanStar: { h: 180, s: 100, l: 75 }      
 };
 
 // Canvas reference
 const canvas = ref(null);
 let animationFrameId = null;
 let stars = [];
+let backgroundStars = []; 
+let ctx = null;
 
 // Track mouse position
-const mouse = { x: 0, y: 0 };
+const mouse = { x: 0, y: 0, active: false };
 
 // Check if device is mobile
 function isMobile() {
   return window.innerWidth <= 768;
 }
 
-// Generate a random hue
-function getRandomHue() {
-  return Math.floor(Math.random() * 360);
+// Generate a random space color
+function getSpaceColorHSL() {
+  const rand = Math.random();
+  if (rand < 0.40) return SPACE_COLORS.blueStar;
+  if (rand < 0.60) return SPACE_COLORS.purpleStar;
+  if (rand < 0.75) return SPACE_COLORS.cyanStar;
+  if (rand < 0.90) return SPACE_COLORS.yellowStar;
+  return SPACE_COLORS.redStar;
 }
 
 // Convert HSL to RGB components
 function hslToRgb(h, s, l) {
+  s /= 100;
+  l /= 100;
   const c = (1 - Math.abs(2 * l - 1)) * s;
   const hh = h / 60;
   const x = c * (1 - Math.abs(hh % 2 - 1));
@@ -70,159 +82,308 @@ function hslToRgb(h, s, l) {
   };
 }
 
-// Build rgba string from rgb and alpha
+// Convert RGB to RGBA string
 function rgbaFromRgb(rgb, alpha) {
   return `rgba(${rgb.r},${rgb.g},${rgb.b},${alpha})`;
 }
 
-// Distance between two points (actual distance)
+// Distance between two points
 function distance(a, b) {
   const dx = b.x - a.x;
   const dy = b.y - a.y;
   return Math.sqrt(dx * dx + dy * dy);
 }
 
-// Calculate the alpha value for the line based on distance
-function getLineAlphaFromDistance(dist) {
-  if (dist > MAX_VISIBLE_RADIUS) {
-    return 0;
-  }
-  const portion = dist / MAX_VISIBLE_RADIUS;
-  if (portion < FADE_START_RATIO) {
-    return 1; 
-  } 
-  const fadeSpan = 1 - FADE_START_RATIO; 
-  const fadeProgress = (portion - FADE_START_RATIO) / fadeSpan;
-  return 1 - fadeProgress;
-}
-
-// Calculate the alpha value for the dot based on distance
-function getDotAlphaFromDistance(dist) {
-  const lineAlpha = getLineAlphaFromDistance(dist); 
-  return Math.max(MIN_DOT_ALPHA, lineAlpha);
-}
-
 // Draw a line between two points
-function drawLine(ctx, x1, y1, x2, y2, color) {
+function drawLine(ctx, x1, y1, x2, y2, color, width = LINE_WIDTH) {
   ctx.beginPath();
   ctx.moveTo(x1, y1);
   ctx.lineTo(x2, y2);
-  ctx.lineWidth = LINE_WIDTH;
+  ctx.lineWidth = width;
   ctx.strokeStyle = color;
   ctx.stroke();
 }
 
-// Draw stars
-function drawStars(ctx) {
-  for (const star of stars) {
-    const distToMouse = distance(star, mouse);
-    const dotAlpha = getDotAlphaFromDistance(distToMouse);
-    ctx.fillStyle = rgbaFromRgb(star.color.rgb, dotAlpha);
 
+// Draw a glowing effect around a star
+function drawGlow(ctx, star, arcFactor, outerFactor) {
+  ctx.beginPath();
+  ctx.arc(star.x, star.y, star.radius * arcFactor, 0, 2 * Math.PI);
+  const glow = ctx.createRadialGradient(
+    star.x, star.y, star.radius * 0.5,
+    star.x, star.y, star.radius * outerFactor
+  );
+  glow.addColorStop(0, rgbaFromRgb(star.color.rgb, 0.3));
+  glow.addColorStop(1, rgbaFromRgb(star.color.rgb, 0));
+  ctx.fillStyle = glow;
+  ctx.fill();
+}
+
+// Create a nebula-like background
+function drawSpaceBackground(ctx) {
+  const gradient = ctx.createRadialGradient(
+    canvas.value.width / 2, 
+    canvas.value.height / 2, 
+    0, 
+    canvas.value.width / 2, 
+    canvas.value.height / 2, 
+    Math.max(canvas.value.width, canvas.value.height)
+  );
+  
+  gradient.addColorStop(0, 'rgba(15, 10, 40, 1)');    
+  gradient.addColorStop(0.5, 'rgba(10, 5, 25, 1)');   
+  gradient.addColorStop(1, 'rgba(0, 0, 10, 1)');     
+  
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, canvas.value.width, canvas.value.height);
+  
+  // Draw tiny background stars (static)
+  for (const star of backgroundStars) {
+    ctx.fillStyle = rgbaFromRgb(star.color.rgb, star.opacity);
     ctx.beginPath();
     ctx.arc(star.x, star.y, star.radius, 0, 2 * Math.PI);
+    ctx.fill();
+    
+    if (star.radius > 1) {
+      drawGlow(ctx, star, 2, 3);
+    }
+  }
+}
+
+// Draw main interactive stars with glow effects
+function drawStars(ctx) {
+  for (const star of stars) {
+    ctx.fillStyle = rgbaFromRgb(star.color.rgb, star.opacity);
+    ctx.beginPath();
+    ctx.arc(star.x, star.y, star.radius, 0, 2 * Math.PI);
+    ctx.fill();
+    if (star.radius > 1.8) {
+      drawGlow(ctx, star, 3, 4);
+    }
+  }
+}
+
+// Connect stars with a cosmic web effect
+function connectStarToStar(ctx) {
+  for (let i = 0; i < stars.length; i++) {
+    const starA = stars[i];
+    for (let j = i + 1; j < stars.length; j++) {
+      const starB = stars[j];
+      const dist = distance(starA, starB);
+      if (dist < STAR_CONNECTION_RADIUS) {
+        const opacity = 1 - (dist / STAR_CONNECTION_RADIUS);
+        const color = rgbaFromRgb(starA.color.rgb, opacity * 0.5);
+        drawLine(ctx, starA.x, starA.y, starB.x, starB.y, color);
+      }
+    }
+  }
+}
+
+// Connect mouse cursor to nearby stars with a cosmic energy effect
+function connectMouseToStars(ctx) {
+  if (!mouse.active) return;
+  for (const star of stars) {
+    const distToMouse = distance(star, mouse);
+    if (distToMouse < MOUSE_CONNECTION_RADIUS) {
+      const opacity = 1 - (distToMouse / MOUSE_CONNECTION_RADIUS);
+      const width = LINE_WIDTH + (opacity * 0.6); 
+      const color = rgbaFromRgb(star.color.rgb, opacity * 0.75);
+      drawLine(ctx, mouse.x, mouse.y, star.x, star.y, color, width);
+      // Apply a pull effect to the star towards the mouse
+      const pullStrength = 0.15 * opacity;
+      const dx = mouse.x - star.x;
+      const dy = mouse.y - star.y;
+      star.vx += (dx * pullStrength) / FPS;
+      star.vy += (dy * pullStrength) / FPS;
+      // Limit velocity
+      const maxVel = 30;
+      const currentVel = Math.sqrt(star.vx * star.vx + star.vy * star.vy);
+      if (currentVel > maxVel) {
+        star.vx = (star.vx / currentVel) * maxVel;
+        star.vy = (star.vy / currentVel) * maxVel;
+      }
+    }
+  }
+}
+
+// Draw occasional shooting stars
+function drawShootingStars(ctx) {
+  if (Math.random() < 0.0005) { 
+    const shootingStar = {
+      x: Math.random() * canvas.value.width,
+      y: Math.random() * canvas.value.height * 0.5, 
+      length: 20 + Math.random() * 30,
+      angle: -Math.PI / 4 + (Math.random() * Math.PI / 2), 
+      opacity: 0.8,
+      decay: 0.02 + Math.random() * 0.03,
+      color: hslToRgb(180 + Math.random() * 60, 100, 90)
+    };
+    // Draw the shooting star trail
+    ctx.beginPath();
+    const endX = shootingStar.x + Math.cos(shootingStar.angle) * shootingStar.length;
+    const endY = shootingStar.y + Math.sin(shootingStar.angle) * shootingStar.length;
+    const gradient = ctx.createLinearGradient(
+      shootingStar.x, shootingStar.y,
+      endX, endY
+    );
+    gradient.addColorStop(0, rgbaFromRgb(shootingStar.color, shootingStar.opacity));
+    gradient.addColorStop(1, rgbaFromRgb(shootingStar.color, 0));
+    ctx.moveTo(shootingStar.x, shootingStar.y);
+    ctx.lineTo(endX, endY);
+    ctx.lineWidth = 1.5;
+    ctx.strokeStyle = gradient;
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(shootingStar.x, shootingStar.y, 1.5, 0, 2 * Math.PI);
+    ctx.fillStyle = rgbaFromRgb(shootingStar.color, shootingStar.opacity);
     ctx.fill();
   }
 }
 
-// Connect stars to each other if they are close enough
-function connectStarToStar(ctx) {
-  for (let i = 0; i < stars.length; i++) {
-    const starA = stars[i];
-    const alphaA = getLineAlphaFromDistance(distance(starA, mouse));
-    if (alphaA <= 0) continue; 
-    for (let j = i + 1; j < stars.length; j++) {
-      const starB = stars[j];
-      const alphaB = getLineAlphaFromDistance(distance(starB, mouse));
-      if (alphaB <= 0) continue; 
-
-      // Early exit using axis differences
-      const dx = starA.x - starB.x;
-      if (Math.abs(dx) > STAR_CONNECTION_RADIUS) continue;
-      const dy = starA.y - starB.y;
-      if (Math.abs(dy) > STAR_CONNECTION_RADIUS) continue;
-
-      const distSquared = dx * dx + dy * dy;
-      if (distSquared < STAR_CONNECTION_RADIUS * STAR_CONNECTION_RADIUS) {
-        const lineAlpha = Math.min(alphaA, alphaB);
-        const lineColor = rgbaFromRgb(starA.color.rgb, lineAlpha);
-        drawLine(ctx, starA.x, starA.y, starB.x, starB.y, lineColor);
-      }
-    }
-  }
-}
-
-// Connect mouse to stars if they are close enough
-function connectMouseToStars(ctx) {
-  for (const star of stars) {
-    const distToMouse = distance(star, mouse);
-    if (distToMouse < MOUSE_CONNECTION_RADIUS) {
-      const lineAlpha = 1 - distToMouse / MOUSE_CONNECTION_RADIUS;
-      if (lineAlpha > 0) {
-        const lineColor = rgbaFromRgb(star.color.rgb, lineAlpha);
-        drawLine(ctx, mouse.x, mouse.y, star.x, star.y, lineColor);
-      }
-    }
-  }
-}
-
-// Draw the canvas
-function draw(ctx) {
-  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-  ctx.globalCompositeOperation = 'lighter';
-  drawStars(ctx);
+// Main draw routine
+function draw() {
+  ctx.clearRect(0, 0, canvas.value.width, canvas.value.height);
+  drawSpaceBackground(ctx);
   connectStarToStar(ctx);
+  drawStars(ctx);
   connectMouseToStars(ctx);
+  drawShootingStars(ctx);
 }
 
+// Check if a star is within the canvas boundaries and adjust its position and velocity
+function checkStarBoundary(star, maxVal, axis) {
+  if (star[axis] < star.radius) {
+    star[axis] = star.radius;
+    if (axis === 'x') star.vx = -star.vx * 0.9;
+    else star.vy = -star.vy * 0.9;
+  } else if (star[axis] > maxVal - star.radius) {
+    star[axis] = maxVal - star.radius;
+    if (axis === 'x') star.vx = -star.vx * 0.9;
+    else star.vy = -star.vy * 0.9;
+  }
+}
+
+// Update star positions and apply forces
 function update() {
-  const centerX = canvas.value.width / 2;
-  const centerY = canvas.value.height / 2;
-  for (const s of stars) {
-    const dx = centerX - s.x;
-    const dy = centerY - s.y;
-    const angle = Math.atan2(dy, dx);
-    const swirl = 0.01;
-    s.vx += swirl * Math.sin(angle);
-    s.vy -= swirl * Math.cos(angle);
-    // Move the star
-    s.x += (s.vx * BOUNCE_SPEED) / FPS;
-    s.y += (s.vy * BOUNCE_SPEED) / FPS;
-    // Bounce off edges
-    if (s.x < 0 || s.x > canvas.value.width) s.vx = -s.vx;
-    if (s.y < 0 || s.y > canvas.value.height) s.vy = -s.vy;
+  for (const star of stars) {
+    if (Math.random() < 0.02) {  
+      star.vx += (Math.random() - 0.5) * AUTONOMOUS_MOVEMENT;
+      star.vy += (Math.random() - 0.5) * AUTONOMOUS_MOVEMENT;
+    }
+    // Return force to initial position when not influenced by mouse
+    if (!mouse.active || distance(star, mouse) > MOUSE_CONNECTION_RADIUS) {
+      const dx = star.initialX - star.x;
+      const dy = star.initialY - star.y;
+      star.vx += dx * RETURN_FORCE;
+      star.vy += dy * RETURN_FORCE;
+    }
+    star.x += (star.vx * BOUNCE_SPEED) / FPS;
+    star.y += (star.vy * BOUNCE_SPEED) / FPS;
+    star.vx += (Math.random() - 0.5) * 0.1;
+    star.vy += (Math.random() - 0.5) * 0.1;
+    star.vx *= 0.995; 
+    star.vy *= 0.995; 
+    // Check for boundary collisions
+    checkStarBoundary(star, canvas.value.width, 'x');
+    checkStarBoundary(star, canvas.value.height, 'y');
+    // Update opacity for twinkling effect
+    star.opacity += star.opacityDelta;
+    if (star.opacity > 1) {
+      star.opacity = 1;
+      star.opacityDelta = -star.opacityDelta * Math.random();
+    } else if (star.opacity < 0.5) {
+      star.opacity = 0.5;
+      star.opacityDelta = -star.opacityDelta * Math.random();
+    }
   }
 }
 
 // Animation loop
-function animate(ctx) {
-  draw(ctx);
+function animate() {
+  draw();
   update();
-  animationFrameId = requestAnimationFrame(() => animate(ctx));
+  animationFrameId = requestAnimationFrame(animate);
 }
 
-// Initialize stars with precomputed RGB values for improved performance
+// Create a star with random properties
+function createStar(width, height, type) {
+  const colorHSL = getSpaceColorHSL();
+  const rgb = hslToRgb(colorHSL.h, colorHSL.s, colorHSL.l);
+  const x = Math.random() * width;
+  const y = Math.random() * height;
+  return {
+    x: x,
+    y: y,
+    initialX: x,   
+    initialY: y,   
+    radius: type.min + Math.random() * (type.max - type.min),
+    vx: (Math.random() - 0.5) * 20, 
+    vy: (Math.random() - 0.5) * 20,
+    opacity: 0.7 + Math.random() * 0.3, 
+    opacityDelta: (Math.random() * 0.01) * (Math.random() > 0.5 ? 1 : -1), 
+    color: { hsl: colorHSL, rgb }
+  };
+}
+
+// Initialize stars based on screen size
 function initStars(width, height) {
   stars = [];
+  backgroundStars = [];
   const numStars = isMobile() ? NUM_STARS.mobile : NUM_STARS.desktop;
-
   for (let i = 0; i < numStars; i++) {
-    const hue = getRandomHue();
-    const rgb = hslToRgb(hue, 1, 0.5); 
-    stars.push({
+    let type;
+    const rand = Math.random();
+    if (rand < STAR_TYPES.TINY.count) {
+      type = STAR_TYPES.TINY;
+    } else if (rand < STAR_TYPES.TINY.count + STAR_TYPES.SMALL.count) {
+      type = STAR_TYPES.SMALL;
+    } else if (rand < STAR_TYPES.TINY.count + STAR_TYPES.SMALL.count + STAR_TYPES.MEDIUM.count) {
+      type = STAR_TYPES.MEDIUM;
+    } else {
+      type = STAR_TYPES.LARGE;
+    }
+    stars.push(createStar(width, height, type));
+  }
+  // Create background stars (static)
+  const numBackgroundStars = numStars * 5;
+  for (let i = 0; i < numBackgroundStars; i++) {
+    const colorHSL = getSpaceColorHSL();
+    const rgb = hslToRgb(colorHSL.h, colorHSL.s, colorHSL.l);
+    backgroundStars.push({
       x: Math.random() * width,
       y: Math.random() * height,
-      radius: Math.random() * 1 + 1,
-      vx: Math.floor(Math.random() * 50) - 25,
-      vy: Math.floor(Math.random() * 50) - 25,
-      color: { hue, rgb }
+      radius: 0.1 + Math.random() * 0.6, 
+      opacity: 0.3 + Math.random() * 0.7, 
+      color: { hsl: colorHSL, rgb }
     });
   }
 }
 
+// Update mouse position from touch events
+function updateMouseFromTouch(e) {
+  e.preventDefault();
+  const touch = e.touches[0];
+  mouse.x = touch.clientX;
+  mouse.y = touch.clientY;
+}
+
+// Touch event handlers for mobile
+function handleTouchStart(e) {
+  updateMouseFromTouch(e);
+  mouse.active = true;
+}
+
+function handleTouchMove(e) {
+  updateMouseFromTouch(e);
+}
+
+function handleTouchEnd() {
+  mouse.active = false;
+}
+
 onMounted(() => {
   const c = canvas.value;
-  const ctx = c.getContext('2d');
+  ctx = c.getContext('2d');
 
   c.width = window.innerWidth;
   c.height = window.innerHeight;
@@ -232,26 +393,44 @@ onMounted(() => {
   c.addEventListener('mousemove', (e) => {
     mouse.x = e.clientX;
     mouse.y = e.clientY;
+    mouse.active = true;
   });
+  
+  c.addEventListener('mouseout', () => {
+    mouse.active = false;
+  });
+  
+  c.addEventListener('touchstart', handleTouchStart, { passive: false });
+  c.addEventListener('touchmove', handleTouchMove, { passive: false });
+  c.addEventListener('touchend', handleTouchEnd);
 
+  // Handle window resize
   window.addEventListener('resize', () => {
     c.width = window.innerWidth;
     c.height = window.innerHeight;
     initStars(c.width, c.height);
   });
 
-  animate(ctx);
+  animate();
 });
 
 onUnmounted(() => {
   if (animationFrameId) {
     cancelAnimationFrame(animationFrameId);
   }
+  
+  // Remove event listeners
+  if (canvas.value) {
+    canvas.value.removeEventListener('touchstart', handleTouchStart);
+    canvas.value.removeEventListener('touchmove', handleTouchMove);
+    canvas.value.removeEventListener('touchend', handleTouchEnd);
+  }
 });
 </script>
 
 <style scoped>
 canvas {
-  background: radial-gradient(ellipse at center, #2b032d 0%, #05000a 70%, #000 100%);
+  background: #000;
+  touch-action: none;
 }
 </style>
