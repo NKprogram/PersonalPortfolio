@@ -34,7 +34,7 @@
         </span>
       </div>
       <!-- Main heading and subtitle -->
-      <h2 class="section-heading">Get In Touch</h2>
+      <h2 class="section-heading">GET IN TOUCH</h2>
       <h3 class="introduction-subtitle">Feel free to reach out.</h3>
       <!-- Contact form -->
       <form @submit.prevent="sendEmail" class="contact-form">

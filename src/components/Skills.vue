@@ -2,7 +2,7 @@
   <section id="skills" class="skills-section">
     <div class="content-container">
       <!-- Main section heading using the custom font -->
-      <h2 class="section-heading">Tech Stack</h2>
+      <h2 class="section-heading">TECH STACK</h2>
       <!-- Subtitle for the section -->
       <h3 class="introduction-subtitle">What I Know.</h3>
       

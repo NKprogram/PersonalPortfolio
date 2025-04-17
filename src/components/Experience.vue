@@ -3,7 +3,7 @@
     <div class="content-container">
       <!-- Section heading with custom font -->
       <h2 class="section-heading">
-        Work Experience
+        WORK EXPERIENCE
       </h2>
       <h3 class="introduction-subtitle">
         Where I've Worked.
