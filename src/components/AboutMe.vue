@@ -18,7 +18,7 @@
           <div class="profile-column">
             <div class="profile-container">
               <img
-                src="@/assets/images/MeFRPic.png"
+                src="@/assets/Images/MeFRPic.png"
                 alt="Profile Photo"
                 class="profile-picture"
               />
@@ -110,7 +110,7 @@
               </a>
 
               <a
-                href="@/assets/files/NuuuradinKoraneResume-3.pdf"
+                href="@/assets/Files/NuuuradinKoraneResume-3.pdf"
                 download
                 rel="noopener noreferrer"
                 class="cosmic-btn resume-btn"
@@ -141,7 +141,7 @@ export default {
 <style scoped>
 @font-face {
   font-family: 'TechnoRace-Italic';
-  src: url('../assets/fonts/TechnoRace-Italic.otf') format('opentype');
+  src: url('../assets/Fonts/TechnoRace-Italic.otf') format('opentype');
   font-style: italic;
   font-weight: 400;
 }

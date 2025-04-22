@@ -243,14 +243,14 @@ body {
 
 @font-face {
   font-family: 'Nebula';
-  src: url('../assets/fonts/NebulaRegular-2O2y3.ttf') format('truetype');
+  src: url('../assets/Fonts/NebulaRegular-2O2y3.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'SpaceNova';
-  src: url('../assets/fonts/SpaceNova-6Rpd1.otf') format('truetype');
+  src: url('../assets/Fonts/SpaceNova-6Rpd1.otf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }

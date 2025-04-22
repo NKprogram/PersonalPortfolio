@@ -85,12 +85,12 @@
 </template>
 
 <script>
-import ImagemorpherPic from '@/assets/images/ImagemorpherPic.png';
-import FluxPic from '@/assets/images/FluxPic.png';
-import SorthubPic from '@/assets/images/SorthubPic.png';
-import SDPic from '@/assets/images/SDPic.png';
-import SufferQRPic from '@/assets/images/SufferQRPic.png';
-import Employee2ndPic from '@/assets/images/Employee2ndPic.png';
+import ImagemorpherPic from '@/assets/Images/ImagemorpherPic.png';
+import FluxPic from '@/assets/Images/FluxPic.png';
+import SorthubPic from '@/assets/Images/SorthubPic.png';
+import SDPic from '@/assets/Images/SDPic.png';
+import SufferQRPic from '@/assets/Images/SufferQRPic.png';
+import Employee2ndPic from '@/assets/Images/Employee2ndPic.png';
 
 export default {
   name: 'Projects',

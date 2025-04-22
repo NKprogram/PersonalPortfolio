@@ -64,24 +64,24 @@
 </template>
 
 <script>
-import vueLogo from '@/assets/images/vue.svg';
-import JavaScriptLogo from '@/assets/images/js.png';
-import PythonLogo from '@/assets/images/python.png';
-import JavaLogo from '@/assets/images/java.png';
-import TypeScriptLogo from '@/assets/images/typescript.png';
-import CSharpLogo from '@/assets/images/c-sharp.png';
-import GolangLogo from '@/assets/images/pngwing.com.png';
-import ReactLogo from '@/assets/images/React-icon.svg.png';
-import FlaskLogo from '@/assets/images/flask.svg';
-import ExpressLogo from '@/assets/images/icons8-express-js.svg';
-import TailwindLogo from '@/assets/images/tailwind-css.svg';
-import NodeLogo from '@/assets/images/node-js.svg';
-import GitLogo from '@/assets/images/git.svg';
-import DockerLogo from '@/assets/images/icons8-docker.svg';
-import VisualStudioLogo from '@/assets/images/icons8-visual-studio-code.svg';
-import AndroidStudioLogo from '@/assets/images/icons8-android-studio.svg';
-import PostmanLogo from '@/assets/images/Postman.svg';
-import figmaLogo from '@/assets/images/Figma.svg';
+import vueLogo from '@/assets/Images/vue.svg';
+import JavaScriptLogo from '@/assets/Images/js.png';
+import PythonLogo from '@/assets/Images/python.png';
+import JavaLogo from '@/assets/Images/java.png';
+import TypeScriptLogo from '@/assets/Images/typescript.png';
+import CSharpLogo from '@/assets/Images/c-sharp.png';
+import GolangLogo from '@/assets/Images/pngwing.com.png';
+import ReactLogo from '@/assets/Images/React-icon.svg.png';
+import FlaskLogo from '@/assets/Images/flask.svg';
+import ExpressLogo from '@/assets/Images/icons8-express-js.svg';
+import TailwindLogo from '@/assets/Images/tailwind-css.svg';
+import NodeLogo from '@/assets/Images/node-js.svg';
+import GitLogo from '@/assets/Images/git.svg';
+import DockerLogo from '@/assets/Images/icons8-docker.svg';
+import VisualStudioLogo from '@/assets/Images/icons8-visual-studio-code.svg';
+import AndroidStudioLogo from '@/assets/Images/icons8-android-studio.svg';
+import PostmanLogo from '@/assets/Images/Postman.svg';
+import figmaLogo from '@/assets/Images/Figma.svg';
 
 
 export default {
@@ -120,7 +120,7 @@ export default {
 <style scoped>
 @font-face {
   font-family: 'TechnoRace-Italic';
-  src: url('../assets/fonts/TechnoRace-Italic.otf') format('opentype');
+  src: url('../assets/Fonts/TechnoRace-Italic.otf') format('opentype');
   font-style: italic;
   font-weight: 400;
 }

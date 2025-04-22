@@ -126,7 +126,7 @@ export default {
 <style lang="scss">
 @font-face {
   font-family: 'TechnoRace-Italic';
-  src: url('../assets/fonts/TechnoRace-Italic.otf') format('opentype');
+  src: url('../assets/Fonts/TechnoRace-Italic.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
