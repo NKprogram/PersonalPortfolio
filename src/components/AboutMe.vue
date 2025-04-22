@@ -110,8 +110,8 @@
               </a>
 
               <a
-                href="@/assets/Files/NuuuradinKoraneResume-3.pdf"
-                download
+                href="/NuuradinKoraneResumeSE.pdf"
+                target="_blank"
                 rel="noopener noreferrer"
                 class="cosmic-btn resume-btn"
               >
