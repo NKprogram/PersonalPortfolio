@@ -4,47 +4,45 @@
       <h1 class="introduction-title">INTRODUCTION</h1>
       <h2 class="introduction-subtitle">Who am I?</h2>
 
-      <!-- Space elements outside the card -->
       <div class="space-elements">
         <div class="astronaut astronaut-left"></div>
         <div class="astronaut astronaut-right"></div>
       </div>
 
-      <!-- Card Container -->
       <div class="card">
         <div class="stars-background">
           <div class="stars-layer"></div>
         </div>
         
         <div class="card-content">
-          <!-- Left Column: Profile Photo -->
           <div class="profile-column">
             <div class="profile-container">
               <img
-                src="@/assets/images/mebald.png"
+                src="@/assets/images/MeFRPic.png"
                 alt="Profile Photo"
                 class="profile-picture"
               />
               <div class="orbit-ring">
-                <!-- Orbit ring around the profile picture -->
                 <div class="moon"></div>
               </div>
             </div>
           </div>
-
-          <!-- About text and social links -->
           <div class="info-column">
-            <!-- About text -->
-            <p class="about-text">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent
-              commodo cursus magna, vel scelerisque nisl consectetur et. Duis mollis,
-              est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio
-              sem nec elit.
-            </p>
-
-            
+            <div class="about-text">
+              <div class="about-point">
+                <span class="about-point-text">Final‑year <span class="keyword">Computing Science</span> student at UAlberta, focused on software development and machine learning.</span>
+              </div>
+              <div class="about-point">
+                <span class="about-point-text">Interested in <span class="keyword">problem-solving</span>, <span class="keyword">smart designs</span>, and <span class="keyword">creative fixes</span>.</span>
+              </div>
+              <div class="about-point">
+                <span class="about-point-text">Built <span class="keyword">full‑stack</span> Webapps, worked on <span class="keyword">data-backed</span> projects, and helped ship tools serving real users.</span>
+              </div>
+              <div class="about-point">
+                <span class="about-point-text">Looking for a <span class="keyword">software developer</span> role where I can <span class="keyword">learn</span>, <span class="keyword">build</span>, and <span class="keyword">grow</span>.</span>
+              </div>
+            </div>           
             <div class="social-links">
-              <!-- GitHub Button -->
               <a
                 href="https://github.com/NKprogram"
                 target="_blank"
@@ -83,7 +81,6 @@
                 </div>
               </a>
 
-              <!-- LinkedIn Button -->
               <a
                 href="https://www.linkedin.com/in/korane-nuuradin/"
                 target="_blank"
@@ -112,7 +109,6 @@
                 </div>
               </a>
 
-              <!-- Resume Button -->
               <a
                 href="@/assets/files/NuuuradinKoraneResume-3.pdf"
                 download
@@ -151,13 +147,14 @@ export default {
 }
 
 .about-me {
-  padding: 4rem 0;       
-  margin-bottom: 15rem;   
+  padding: 4rem 0;
+  margin-bottom: 12rem;
   position: relative;
   display: flex;
   justify-content: center;
   overflow: hidden;
   pointer-events: none;
+  min-height: 600px;
 }
 
 .content-container {
@@ -167,7 +164,7 @@ export default {
   align-items: center;
   gap: 2rem;
   text-align: center;
-  max-width: 1200px;
+  max-width: 1000px;
   width: 100%;
   position: relative;
   pointer-events: none;
@@ -175,21 +172,20 @@ export default {
 
 .introduction-title {
   text-align: center;
-  font-size: 3rem;
-  margin-bottom: 1rem;
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
   font-family: 'TechnoRace-Italic', sans-serif;
   color: #ffffff;
-  text-shadow: 0 0 10px rgba(139, 233, 253, 0.7);
-  letter-spacing: 2px;
+  text-shadow: 0 0 12px rgba(139, 233, 253, 0.7);
+  letter-spacing: 3px;
   pointer-events: none;
 }
 
 .introduction-subtitle {
-  font-size: 2rem;
+  font-size: 2.5rem;
   color: rgba(255, 255, 255, 0.7);
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
 }
-
 
 .space-elements {
   position: absolute;
@@ -211,38 +207,36 @@ export default {
   z-index: 1;
 }
 
-
 .astronaut-left {
   left: -1%;
-  top: 200px;
+  top: 180px;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 120'%3E%3Cdefs%3E%3ClinearGradient id='visor' x1='0%25' y1='0%25' x2='100%25' y2='0%25'%3E%3Cstop offset='0%25' stop-color='%2366c5ff' stop-opacity='0.7'/%3E%3Cstop offset='100%25' stop-color='%233280ff' stop-opacity='0.9'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cg%3E%3Cellipse cx='50' cy='40' rx='30' ry='30' fill='white'/%3E%3Crect x='20' y='40' width='60' height='50' rx='20' fill='white'/%3E%3Cellipse cx='50' cy='40' rx='22' ry='22' fill='url(%23visor)'/%3E%3Ccircle cx='40' cy='90' r='10' fill='white'/%3E%3Ccircle cx='60' cy='90' r='10' fill='white'/%3E%3Crect x='45' y='70' width='10' height='20' fill='%23444'/%3E%3Crect x='35' y='40' width='30' height='5' fill='%23444'/%3E%3Ccircle cx='32' cy='35' r='3' fill='%23ff5555'/%3E%3Ccircle cx='68' cy='35' r='3' fill='%23ff5555'/%3E%3C/g%3E%3C/svg%3E");
   animation: float-left 15s ease-in-out infinite;
 }
 
-
 .astronaut-right {
   right: -2%;
-  top: 350px;
+  top: 300px;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 120'%3E%3Cdefs%3E%3ClinearGradient id='visor' x1='0%25' y1='0%25' x2='100%25' y2='0%25'%3E%3Cstop offset='0%25' stop-color='%2366c5ff' stop-opacity='0.7'/%3E%3Cstop offset='100%25' stop-color='%233280ff' stop-opacity='0.9'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cg%3E%3Cellipse cx='50' cy='40' rx='30' ry='30' fill='white'/%3E%3Crect x='20' y='40' width='60' height='50' rx='20' fill='white'/%3E%3Cellipse cx='50' cy='40' rx='22' ry='22' fill='url(%23visor)'/%3E%3Ccircle cx='40' cy='90' r='10' fill='white'/%3E%3Ccircle cx='60' cy='90' r='10' fill='white'/%3E%3Crect x='45' y='70' width='10' height='20' fill='%23444'/%3E%3Crect x='35' y='40' width='30' height='5' fill='%23444'/%3E%3Ccircle cx='32' cy='35' r='3' fill='%23ff5555'/%3E%3Ccircle cx='68' cy='35' r='3' fill='%23ff5555'/%3E%3C/g%3E%3C/svg%3E");
   transform: rotate(45deg);
   animation: float-right 15s ease-in-out 2s infinite;
 }
 
-
 .card {
   background: rgba(25, 25, 40, 0.8);
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(14px);
   border-radius: 20px;
-  padding: 4rem;
+  padding: 3.5rem;
   max-width: 1000px;
-  width: 90%;
+  width: 92%;
   position: relative;
   overflow: hidden;
   margin-bottom: 2em;
   pointer-events: auto;
-  box-shadow: 0 0 40px rgba(111, 66, 193, 0.3);
+  box-shadow: 0 0 40px rgba(111, 66, 193, 0.4);
   border: 1px solid rgba(111, 66, 193, 0.3);
   z-index: 2;
+  min-height: 350px;
 }
 
 .stars-background {
@@ -278,11 +272,10 @@ export default {
   z-index: 5;
   display: flex;
   flex-direction: row;
-  gap: 4rem;
+  gap: 3rem;
   align-items: center;
 }
 
-/* Profile Column */
 .profile-column {
   flex: 1;
   display: flex;
@@ -294,15 +287,14 @@ export default {
   flex: 2;
   display: flex;
   flex-direction: column;
-  gap: 2.5rem;
+  gap: 2rem;
   text-align: left;
 }
 
-
 .profile-container {
   position: relative;
-  width: 250px;
-  height: 250px;
+  width: 260px;
+  height: 260px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -314,10 +306,10 @@ export default {
   border-radius: 50%;
   object-fit: cover;
   opacity: 0.95;
-  border: 4px solid rgba(255, 255, 255, 0.3);
+  border: 3px solid rgba(255, 255, 255, 0.3);
   z-index: 2;
+  box-shadow: 0 0 15px rgba(139, 233, 253, 0.3);
 }
-
 
 .orbit-ring {
   position: absolute;
@@ -330,7 +322,6 @@ export default {
   align-items: center;
 }
 
-
 .moon {
   position: absolute;
   top: 50%;
@@ -340,7 +331,7 @@ export default {
   height: 40px;
   background: linear-gradient(145deg, #e6e6e6, #b3b3b3);
   border-radius: 50%;
-  box-shadow: inset -5px -5px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: inset -6px -6px 12px rgba(0, 0, 0, 0.2);
   animation: rotate-moon 12s linear infinite;
   z-index: 3;
 }
@@ -356,14 +347,121 @@ export default {
   border-radius: 50%;
 }
 
-
 .about-text {
   color: white;
   font-size: 1.2rem;
-  line-height: 1.8;
+  line-height: 1.7;
   margin: 0;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
 }
 
+.about-point {
+  position: relative;
+  padding-left: 3rem;
+  background: linear-gradient(90deg, rgba(111, 66, 193, 0.2), transparent);
+  border-radius: 8px;
+  padding: 0.8rem 1rem 0.8rem 3.5rem;
+  transition: all 0.3s ease;
+  border-left: 2px solid rgba(139, 233, 253, 0.7);
+  overflow: hidden;
+}
+
+.about-point:hover {
+  transform: translateX(5px);
+  background: linear-gradient(90deg, rgba(111, 66, 193, 0.3), transparent);
+  box-shadow: 0 0 15px rgba(139, 233, 253, 0.2);
+}
+
+.about-point::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 40px;
+  background: linear-gradient(90deg, rgba(139, 233, 253, 0.2), transparent);
+  clip-path: polygon(0 0, 100% 0, 80% 100%, 0 100%);
+}
+
+/* Remove emoji from content and use as pseudo-element */
+.about-point:nth-child(1)::after { content: "🎓"; }
+.about-point:nth-child(2)::after { content: "🧠"; }
+.about-point:nth-child(3)::after { content: "🛠️"; }
+.about-point:nth-child(4)::after { content: "🔍"; }
+
+.about-point::after {
+  position: absolute;
+  left: 1.2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.4rem;
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.7));
+  animation: pulse 3s infinite;
+}
+
+
+.about-point-text {
+  font-family: 'Space Mono', monospace;
+  position: relative;
+  display: inline;
+  background: linear-gradient(90deg, #8be9fd, #bd93f9);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 8px rgba(139, 233, 253, 0.3);
+}
+
+
+.keyword {
+  color: #ff79c6;
+  font-weight: bold;
+  position: relative;
+  text-shadow: 0 0 5px rgba(255, 121, 198, 0.5);
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: translateY(-50%) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-50%) scale(1.1);
+    opacity: 0.9;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .about-point {
+    padding-left: 3rem;
+  }
+  
+  .about-point::after {
+    left: 0.8rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .about-text {
+    font-size: 1.1rem;
+  }
+  
+  .about-point {
+    padding: 0.7rem 0.8rem 0.7rem 2.8rem;
+  }
+  
+  .about-point::after {
+    font-size: 1.2rem;
+    left: 0.7rem;
+  }
+}
+
+.about-point:last-child {
+  margin-bottom: 0;
+}
 
 .social-links {
   display: flex;
@@ -372,12 +470,11 @@ export default {
   margin-top: 1rem;
 }
 
-
 .cosmic-btn {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 13rem;
+  width: 12rem;
   height: 3rem;
   overflow: hidden;
   cursor: pointer;
@@ -397,7 +494,7 @@ export default {
   background-origin: border-box;
   background-clip: content-box, border-box;
   text-decoration: none;
-  margin-top: 1rem;
+  margin-top: 0.75rem;
   position: relative;
 }
 
@@ -409,7 +506,7 @@ export default {
 
 .resume-btn {
   width: auto;
-  padding: 0 1.5rem;
+  padding: 0 1.8rem;
   height: 56px;
 }
 
@@ -433,13 +530,18 @@ export default {
   text-shadow: 0 0 4px white;
 }
 
+.btn-content svg {
+  width: 28px;
+  height: 28px;
+}
+
 strong {
   z-index: 2;
   font-family: "Avalors Personal Use", sans-serif;
-  font-size: 12px;
+  font-size: 15px;
   letter-spacing: 5px;
   color: #ffffff;
-  text-shadow: 0 0 4px white;
+  text-shadow: 0 0 6px white;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -449,12 +551,12 @@ strong {
   position: absolute;
   display: flex;
   width: 80%;
-  height: 30px;
+  height: 25px;
 }
 
 .circle {
   width: 100%;
-  height: 30px;
+  height: 25px;
   filter: blur(2rem);
   animation: pulse_3011 4s infinite;
   z-index: -1;
@@ -520,7 +622,6 @@ strong {
   opacity: 0.5;
 }
 
-/* Animations */
 @keyframes rotate-moon {
   0% {
     transform: rotate(0deg) translateX(140px) rotate(0deg);
@@ -602,55 +703,81 @@ strong {
   }
 }
 
+@media screen and (max-width: 992px) {
+  .content-container {
+    max-width: 95%;
+  }
+  
+  .card {
+    padding: 3rem;
+  }
+  
+  .about-text {
+    font-size: 1.2rem;
+  }
+}
+
 @media (max-width: 932px) {
   .astronaut-left {
     left: 2%;
     top: 180px;
-    width: 80px;
-    height: 80px;
+    width: 90px;
+    height: 90px;
     opacity: 0.8;
   }
   
   .astronaut-right {
     right: 2%;
-    top: 320px;
-    width: 80px;
-    height: 80px;
+    top: 300px;
+    width: 90px;
+    height: 90px;
     opacity: 0.8;
   }
 
   .card {
-    max-width: 90%;
+    max-width: 92%;
     padding: 3rem;
   }
 
   .profile-container {
-    width: 220px;
-    height: 220px;
+    width: 240px;
+    height: 240px;
+  }
+
+  .profile-picture {
+    width: 180px;
+    height: 180px;
   }
 
   .orbit-ring {
-    width: 240px;
-    height: 240px;
+    width: 260px;
+    height: 260px;
   }
 
   .moon {
     width: 35px;
     height: 35px;
-    animation: rotate-moon 12s linear infinite;
   }
 
   @keyframes rotate-moon {
     0% {
-      transform: rotate(0deg) translateX(120px) rotate(0deg);
+      transform: rotate(0deg) translateX(130px) rotate(0deg);
     }
     100% {
-      transform: rotate(360deg) translateX(120px) rotate(-360deg);
+      transform: rotate(360deg) translateX(130px) rotate(-360deg);
     }
   }
 }
 
 @media (max-width: 768px) {
+  .introduction-title {
+    font-size: 2.5rem;
+  }
+  
+  .introduction-subtitle {
+    font-size: 1.8rem;
+  }
+
   .card {
     padding: 2.5rem;
   }
@@ -684,8 +811,8 @@ strong {
   }
   
   .moon {
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
   }
   
   @keyframes rotate-moon {
@@ -699,7 +826,7 @@ strong {
   
   .astronaut-left {
     left: 0;
-    transform: scale(0.7);
+    transform: scale(0.8);
     top: 150px;
     width: 70px;
     height: 70px;
@@ -708,8 +835,8 @@ strong {
   
   .astronaut-right {
     right: 0;
-    transform: scale(0.7) rotate(45deg);
-    top: 300px;
+    transform: scale(0.8) rotate(45deg);
+    top: 280px;
     width: 70px;
     height: 70px;
     opacity: 0.7;

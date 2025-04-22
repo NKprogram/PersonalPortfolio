@@ -36,19 +36,19 @@
       <!-- Main heading and subtitle -->
       <h2 class="section-heading">GET IN TOUCH</h2>
       <h3 class="introduction-subtitle">Feel free to reach out.</h3>
-      <!-- Contact form -->
-      <form @submit.prevent="sendEmail" class="contact-form">
+      <!-- Contact form using formspree -->
+      <form action="https://formspree.io/f/xpwdzajg" method="POST" class="contact-form">
         <div class="form-group">
           <label for="name">Name</label>
-          <input v-model="formData.name" type="text" id="name" placeholder="Your Name" required />
+          <input type="text" id="name" name="name" placeholder="Your Name" required />
         </div>
         <div class="form-group">
           <label for="email">Email</label>
-          <input v-model="formData.email" type="email" id="email" placeholder="Your Email" required />
+          <input type="email" id="email" name="email" placeholder="Your Email" required />
         </div>
         <div class="form-group">
           <label for="message">Message</label>
-          <textarea v-model="formData.message" id="message" rows="5" placeholder="Your Message" required></textarea>
+          <textarea id="message" name="message" rows="5" placeholder="Your Message" required></textarea>
         </div>
         <button type="submit" class="btn">
           <strong>Send Message.</strong>
@@ -66,19 +66,11 @@
 </template>
 
 <script>
-import emailjs from 'emailjs-com';
-
 export default {
   name: 'ContactMe',
   data() {
     return {
-      formData: {
-        name: '',
-        email: '',
-        message: '',
-        to_email: 'nuuradin.sj@gmail.com'
-      },
-     // Define shooting stars with their own positions and durations
+      // shooting stars and comets data
       shootingStars: [
         { top: "10%", right: "5%", delay: "0s",   duration: "2s",   background: "#fff",   boxShadow: "0 0 0 4px rgba(255,255,255,0.1), 0 0 0 8px rgba(255,255,255,0.1), 0 0 20px rgba(255,255,255,1)" },
         { top: "15%", right: "25%", delay: "0.8s", duration: "5s",   background: "#fff",   boxShadow: "0 0 0 4px rgba(255,255,255,0.1), 0 0 0 8px rgba(255,255,255,0.1), 0 0 20px rgba(255,255,255,1)" },
@@ -89,37 +81,12 @@ export default {
         { top: "5%",  right: "70%", delay: "5.2s", duration: "4s",   background: "#50ff8d", boxShadow: "0 0 0 4px rgba(80,255,141,0.1), 0 0 0 8px rgba(80,255,141,0.1), 0 0 20px rgba(80,255,141,1)" },
         { top: "60%", right: "75%", delay: "6s",   duration: "6.4s", background: "#ff50dc", boxShadow: "0 0 0 4px rgba(255,80,220,0.1), 0 0 0 8px rgba(255,80,220,0.1), 0 0 20px rgba(255,80,220,1)" }
       ],
-      // Define comets with their own positions and durations
       comets: [
         { top: "40%", right: "15%", delay: "0.5s", duration: "8s", background: "#50c5ff", boxShadow: "0 0 0 4px rgba(80,197,255,0.1), 0 0 0 8px rgba(80,197,255,0.1), 0 0 20px rgba(80,197,255,1)" },
         { top: "65%", right: "20%", delay: "2s",   duration: "10s", background: "#aa50ff", boxShadow: "0 0 0 4px rgba(170,80,255,0.1), 0 0 0 8px rgba(170,80,255,0.1), 0 0 20px rgba(170,80,255,1)" },
         { top: "85%", right: "40%", delay: "3.5s", duration: "7s", background: "#ffcb50", boxShadow: "0 0 0 4px rgba(255,203,80,0.1), 0 0 0 8px rgba(255,203,80,0.1), 0 0 20px rgba(255,203,80,1)" }
       ]
     };
-  },
-  methods: {
-    sendEmail() {
-      emailjs.send(
-        'YOUR_SERVICE_ID',
-        'YOUR_TEMPLATE_ID',
-        this.formData,
-        'YOUR_USER_ID'
-      )
-      .then(response => {
-        console.log('Email sent successfully!', response.status, response.text);
-        alert('Your message has been sent successfully!');
-        this.resetForm();
-      })
-      .catch(err => {
-        console.error('Failed to send email:', err);
-        alert('Failed to send email. Please try again later.');
-      });
-    },
-    resetForm() {
-      this.formData.name = '';
-      this.formData.email = '';
-      this.formData.message = '';
-    }
   }
 };
 </script>
@@ -240,19 +207,19 @@ export default {
 }
 .section-heading {
   text-align: center;
-  font-size: 3rem;
-  margin-bottom: 1rem;
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
   font-family: 'TechnoRace-Italic', sans-serif;
-  color: #fff;
-  text-shadow: 0 0 10px rgba(139,233,253,0.7);
-  letter-spacing: 2px;
+  color: #ffffff;
+  text-shadow: 0 0 12px rgba(139, 233, 253, 0.7);
+  letter-spacing: 3px;
   position: relative;
   z-index: 10;
 }
 .introduction-subtitle {
-  font-size: 2rem;
+  font-size: 2.5rem;
   color: rgba(255,255,255,0.7);
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
   text-align: center;
   position: relative;
   z-index: 10;

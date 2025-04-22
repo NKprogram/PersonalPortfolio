@@ -64,36 +64,53 @@
 </template>
 
 <script>
-import vueLogo from '@/assets/vue.svg';
-import mebald from '@/assets/images/mebald.png';
+import vueLogo from '@/assets/images/vue.svg';
+import JavaScriptLogo from '@/assets/images/js.png';
+import PythonLogo from '@/assets/images/python.png';
+import JavaLogo from '@/assets/images/java.png';
+import TypeScriptLogo from '@/assets/images/typescript.png';
+import CSharpLogo from '@/assets/images/c-sharp.png';
+import GolangLogo from '@/assets/images/pngwing.com.png';
+import ReactLogo from '@/assets/images/React-icon.svg.png';
+import FlaskLogo from '@/assets/images/flask.svg';
+import ExpressLogo from '@/assets/images/icons8-express-js.svg';
+import TailwindLogo from '@/assets/images/tailwind-css.svg';
+import NodeLogo from '@/assets/images/node-js.svg';
+import GitLogo from '@/assets/images/git.svg';
+import DockerLogo from '@/assets/images/icons8-docker.svg';
+import VisualStudioLogo from '@/assets/images/icons8-visual-studio-code.svg';
+import AndroidStudioLogo from '@/assets/images/icons8-android-studio.svg';
+import PostmanLogo from '@/assets/images/Postman.svg';
+import figmaLogo from '@/assets/images/Figma.svg';
+
 
 export default {
   name: 'Skills',
   data() {
     return {
       programmingLanguages: [
-        { title: 'JavaScript', icon: vueLogo },
-        { title: 'Python', icon: vueLogo },
-        { title: 'TypeScript', icon: vueLogo },
-        { title: 'HTML', icon: vueLogo },
-        { title: 'CSS', icon: vueLogo },
-        { title: 'Java', icon: vueLogo }
+        { title: 'JavaScript', icon: JavaScriptLogo },
+        { title: 'Python', icon: PythonLogo },
+        { title: 'TypeScript', icon: TypeScriptLogo },
+        { title: 'C#', icon: CSharpLogo },
+        { title: 'Golang', icon: GolangLogo },
+        { title: 'Java', icon: JavaLogo }
       ],
       frameworksLibraries: [
         { title: 'Vue.js', icon: vueLogo },
-        { title: 'React', icon: vueLogo },
-        { title: 'Angular', icon: vueLogo },
-        { title: 'Express.js', icon: vueLogo },
-        { title: 'Tailwind CSS', icon: vueLogo },
-        { title: 'Node.js', icon: vueLogo }
+        { title: 'React', icon: ReactLogo },
+        { title: 'Flask', icon: FlaskLogo },
+        { title: 'Express.js', icon: ExpressLogo },
+        { title: 'Tailwind CSS', icon: TailwindLogo},
+        { title: 'Node.js', icon: NodeLogo }
       ],
       developerTools: [
-        { title: 'Git & GitHub', icon: mebald },
-        { title: 'Docker', icon: mebald },
-        { title: 'MongoDB', icon: mebald },
-        { title: 'MySQL', icon: mebald },
-        { title: 'Webpack', icon: mebald },
-        { title: 'CI/CD', icon: mebald }
+        { title: 'Git & GitHub', icon: GitLogo },
+        { title: 'Docker', icon: DockerLogo},
+        { title: 'VS code', icon: VisualStudioLogo },
+        { title: 'Android Studio', icon: AndroidStudioLogo },
+        { title: 'Postman', icon: PostmanLogo },
+        { title: 'Figma', icon: figmaLogo}
       ]
     };
   }
@@ -134,19 +151,18 @@ export default {
 
 .section-heading {
   text-align: center;
-  font-size: 3rem;
-  margin-bottom: 1rem;
+  font-size: 4rem; 
+  margin-bottom: 1.5rem;
   font-family: 'TechnoRace-Italic', sans-serif;
   color: #ffffff;
-  text-shadow: 0 0 10px rgba(139, 233, 253, 0.7);
-  letter-spacing: 2px;
-  pointer-events: none;
+  text-shadow: 0 0 12px rgba(139, 233, 253, 0.7);
+  letter-spacing: 3px;
 }
 
 .introduction-subtitle {
-  font-size: 2rem;
+  font-size: 2.5rem; 
   color: rgba(255, 255, 255, 0.7);
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
   text-align: center;
 }
 

@@ -62,7 +62,7 @@ const Menu = ref([
   { name: 'Skills',      href: '#skills',    color: '#10B981' }, // Emerald
   { name: 'Contact',     href: '#contact',   color: '#EF4444' }  // Red
 ]);
-// Reactive variables for menu state and active section
+// Reactive variables
 const isMenuOpen = ref(false);
 const activeSection = ref('');
 const isScrolled = ref(false);

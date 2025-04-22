@@ -1,16 +1,13 @@
 <template>
   <section id="experience" class="experience-section">
     <div class="content-container">
-      <!-- Section heading with custom font -->
       <h2 class="section-heading">
         WORK EXPERIENCE
       </h2>
       <h3 class="introduction-subtitle">
         Where I've Worked.
       </h3>
-      <!-- Experience wrapper for company list and details -->
       <div class="experience-wrapper">
-        <!-- on the left side: Company list with planets -->
         <div class="company-list">
           <div class="orbit-line"></div>
           <div
@@ -26,7 +23,6 @@
           </div>
         </div>
 
-        <!-- on the right side: Company details -->
         <div class="company-details">
           <div class="cosmic-details-container">
             <h3 class="job-title">
@@ -53,49 +49,46 @@
 <script>
 export default {
   name: 'Experience',
-  data() {
+    data() {
     return {
       selectedIndex: 0,
       jobs: [
         {
-          title: 'Senior Front-End Developer',
-          company: 'Nebula Systems',
-          start: 'May 2021',
-          end: 'Present',
+          title: 'Software Engineer Intern',
+          company: 'NotJustYou',
+          start: 'Sep 2024',
+          end: 'Dec 2024',
           planet: 'earth',
           bullets: [
-            'Architected scalable Vue.js applications for enterprise clients',
-            'Improved site performance by 42% through optimization techniques',
-            'Led a team of 4 developers to deliver 7 major feature releases',
-            'Implemented advanced animation systems using GSAP and Three.js'
+            'Developed the Medical Wallet feature in React Native, enabling image uploads and health entry tracking, while connecting patient and caregiver profiles securely.',
+            'Designed an accessible, calming UI tailored for chronically ill users and caregivers, with a focus on privacy and ethical user experience.',
+            'Automated CI/CD pipelines using GitHub Actions and self-hosted runners, reducing manual deployment time by 30% and streamlining releases.'
           ]
         },
         {
-          title: 'Front-End Developer',
-          company: 'CreativeTech Solutions',
-          start: 'Apr 2019',
-          end: 'Apr 2021',
+          title: 'Data Science Intern',
+          company: 'M2M Tech',
+          start: 'May 2023',
+          end: 'Aug 2023',
           planet: 'mars',
           bullets: [
-            'Developed dynamic user interfaces with Vue.js and TailwindCSS',
-            'Collaborated with design & QA teams to achieve 30% faster load times',
-            'Implemented a real-time chat feature via WebSockets',
-            'Contributed to company-wide accessibility standards'
+            'Developed and optimized predictive models for 10K+ records using Python, scikit-learn, and Bokeh, improving the precision of segmentation by 17%.',
+            'Created interactive dashboards and visual reports using Pandas, Matplotlib, and Seaborn to analyze trends and support data-driven exploration.',
+            'Collaborated with front-end teams to embed machine learning outputs into web interfaces, enabling real-time recommendations and user insights.'
           ]
         },
         {
-          title: 'Junior Web Developer',
-          company: 'Stellar Labs',
-          start: 'Jun 2017',
-          end: 'Mar 2019',
+          title: 'Computer Science Mentor',
+          company: 'Future Creators',
+          start: 'Jan 2022',
+          end: 'Mar 2022',
           planet: 'mercury',
           bullets: [
-            'Built responsive websites with HTML5, CSS3, and JavaScript',
-            'Reduced technical debt by refactoring legacy code',
-            'Coordinated closely with product owners to meet deadlines',
-            'Launched 3 major product releases on schedule'
+            'Delivered weekly coding workshops focused on beginner-friendly tools and Python-based project development.',
+            'Guided mentees through end-to-end application design, incorporating backend logic, interface layout, and testing.',
+            'Introduced version control and API usage to support clean, modular, and collaborative development practices.'
           ]
-        }
+        },
       ]
     };
   }
@@ -113,7 +106,7 @@ export default {
 .experience-section {
   pointer-events: none;
   padding: 4rem 0;
-  margin-bottom: 15rem; 
+  margin-bottom: 12rem;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -127,7 +120,7 @@ export default {
   pointer-events: none;
   z-index: 10;
   position: relative;
-  max-width: 900px;
+  max-width: 1000px;
   width: 90%;
   margin: 0 auto;
   text-align: left;
@@ -136,18 +129,18 @@ export default {
 
 .section-heading {
   text-align: center;
-  font-size: 3rem;
-  margin-bottom: 1rem;
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
   font-family: 'TechnoRace-Italic', sans-serif;
   color: #ffffff;
-  text-shadow: 0 0 10px rgba(139, 233, 253, 0.7);
-  letter-spacing: 2px;
+  text-shadow: 0 0 12px rgba(139, 233, 253, 0.7);
+  letter-spacing: 3px;
 }
 
 .introduction-subtitle {
-  font-size: 2rem;
+  font-size: 2.5rem;
   color: rgba(255, 255, 255, 0.7);
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
   text-align: center;
 }
 
@@ -165,7 +158,7 @@ export default {
   padding-left: 1rem;
   position: relative;
   justify-content: space-between;
-  height: 400px;
+  height: 450px;
 }
 
 .orbit-line {
@@ -179,7 +172,7 @@ export default {
 }
 
 .company-item {
-  margin-bottom: 1.5rem; 
+  margin-bottom: 2rem;
   cursor: pointer;
   position: relative;
   padding-left: 3rem;
@@ -189,6 +182,7 @@ export default {
   display: flex;
   align-items: center;
   z-index: 10;
+  font-size: 1rem;
 }
 
 .planet-container {
@@ -209,7 +203,6 @@ export default {
   background-position: center;
 }
 
-
 .planet-mercury {
   background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><radialGradient id="mercury" cx="50%" cy="50%" r="50%" fx="50%" fy="50%"><stop offset="0%" stop-color="%23e5e5e5" /><stop offset="50%" stop-color="%23c2c2c2" /><stop offset="100%" stop-color="%238a8a8a" /></radialGradient></defs><circle cx="50" cy="50" r="48" fill="url(%23mercury)" /><circle cx="30" cy="30" r="10" fill="%23a5a5a5" opacity="0.6" /><circle cx="70" cy="40" r="15" fill="%23909090" opacity="0.5" /><circle cx="60" cy="70" r="12" fill="%23707070" opacity="0.7" /></svg>');
   box-shadow: 0 0 15px rgba(200, 200, 200, 0.7);
@@ -226,8 +219,9 @@ export default {
 }
 
 .planet-name {
-  margin-left: 10px;
+  margin-left: 12px;
   transition: color 0.3s;
+  font-size: 1.2rem;
 }
 
 .company-item.active .planet {
@@ -237,38 +231,41 @@ export default {
 
 .company-item.active .planet-name {
   color: #ff79c6;
-  text-shadow: 0 0 5px rgba(255, 121, 198, 0.5);
+  text-shadow: 0 0 6px rgba(255, 121, 198, 0.5);
+  font-size: 1.3rem;
 }
 
 .company-item:hover .planet-container {
-  transform: translateX(5px);
+  transform: translateX(6px);
 }
 
 .company-details {
-  flex: 2;
+  flex: 2.5;
   position: relative;
 }
 
 .cosmic-details-container {
   background: rgba(40, 42, 54, 0.6);
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(10px);
   border-radius: 12px;
-  padding: 1.5rem;
+  padding: 2rem;
   border: 1px solid rgba(139, 233, 253, 0.3);
-  box-shadow: 0 0 15px rgba(139, 233, 253, 0.2);
+  box-shadow: 0 0 20px rgba(139, 233, 253, 0.3);
+  min-height: 370px;
 }
 
 .job-title {
-  font-size: 1.6rem; 
+  font-size: 1.8rem;
   font-weight: bold;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.5rem;
   color: #ff79c6;
+  text-shadow: 0 0 6px rgba(255, 121, 198, 0.4);
 }
 
 .job-dates {
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: #bd93f9;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .job-details {
@@ -278,10 +275,11 @@ export default {
 }
 
 .job-details li {
-  margin-bottom: 0.8rem;
+  margin-bottom: 1.2rem;
   font-size: 1.2rem;
   position: relative;
   padding-left: 1.5rem;
+  line-height: 1.5;
 }
 
 .job-details li::before {
@@ -289,6 +287,18 @@ export default {
   position: absolute;
   left: 0;
   color: #50fa7b;
+  font-size: 1.2rem;
+  text-shadow: 0 0 6px rgba(80, 250, 123, 0.6);
+}
+
+@media screen and (max-width: 992px) {
+  .content-container {
+    max-width: 95%;
+  }
+  
+  .job-details li {
+    font-size: 1.1rem;
+  }
 }
 
 @media screen and (max-width: 768px) {
@@ -345,25 +355,22 @@ export default {
     margin-top: 0.5rem;
     font-size: 0.9rem;
   }
-
-  .section-heading {
-    font-size: 2rem;
-  }
-  
-  .introduction-subtitle {
-    font-size: 1.5rem;
-  }
   
   .job-title {
-    font-size: 1.4rem;
+    font-size: 1.6rem;
   }
   
   .job-dates {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
   }
   
   .job-details li {
-    font-size: 1rem;
+    font-size: 1.1rem;
+  }
+  
+  .cosmic-details-container {
+    padding: 1.5rem;
+    min-height: auto;
   }
 }
 </style>

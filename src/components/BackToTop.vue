@@ -5,7 +5,7 @@
     @click="scrollToTop"
     aria-label="Back to top"
   >
-    <!-- SVG icon for the arrow pointing upwards -->
+    <!-- SVG icon for the arrow pointing up -->
     <svg class="arrow" viewBox="0 0 24 24" aria-hidden="true">
       <path d="M12 4l-8 8h6v8h4v-8h6l-8-8z" />
     </svg>

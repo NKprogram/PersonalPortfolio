@@ -1,7 +1,7 @@
 <template>
   <section id="projects" class="projects-section">
     <div class="content-container">
-      <!-- Main heading with a unique font style -->
+      <!-- Title for the section -->
       <h1 class="introduction-title">PROJECTS</h1>
       <!-- Subtitle for the section -->
       <h2 class="introduction-subtitle">What I've Made.</h2>
@@ -29,7 +29,7 @@
               <!-- Project Details -->
               <div class="card-content">
                 <h3 class="card-title">{{ project.title }}</h3>
-                <p class="card-description">{{ project.description }}</p>
+                <p class="card-description" :class="{ 'expanded-description': selectedCardIndex === index }">{{ project.description }}</p>
                 <!-- Tags -->
                 <div class="card-tags">
                   <span class="tag framework">{{ project.tags[0] }}</span>
@@ -69,7 +69,7 @@
                 </a>
               </div>
               
-              <!-- Space elements for background effect -->
+              <!-- Space elements for the background -->
               <div class="space-elements">
                 <div class="stars-small"></div>
                 <div class="planet"></div>
@@ -85,8 +85,12 @@
 </template>
 
 <script>
-import vueLogo from '@/assets/vue.svg';
-import mebald from '@/assets/images/mebald.png';
+import ImagemorpherPic from '@/assets/images/ImagemorpherPic.png';
+import FluxPic from '@/assets/images/FluxPic.png';
+import SorthubPic from '@/assets/images/SorthubPic.png';
+import SDPic from '@/assets/images/SDPic.png';
+import SufferQRPic from '@/assets/images/SufferQRPic.png';
+import Employee2ndPic from '@/assets/images/Employee2ndPic.png';
 
 export default {
   name: 'Projects',
@@ -94,46 +98,46 @@ export default {
     return {
       projects: [
         {
-          title: 'Project One',
-          image: mebald,
-          description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac suscipit sapien.',
-          tags: ['Vue.js', 'JavaScript', 'Vuex', 'Firebase'],
-          githubLink: 'https://github.com/yourusername/project-one'
+          title: 'ImageMorpher',
+          image: ImagemorpherPic,
+          description: 'A Python-based bot that transforms images into styles like ASCII, pixel art, and even Sketch. Runs in Discord via Ngrok or in the cloud using AWS Lambda for fast, serverless image processing.',
+          tags: ['Flask', 'Python', 'AWS Lambda', 'Docker'],
+          githubLink: 'https://github.com/NKprogram/ImageMorpher'
         },
         {
-          title: 'Project Two',
-          image: vueLogo,
-          description: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi.',
-          tags: ['React', 'TypeScript', 'Redux', 'MongoDB'],
-          githubLink: 'https://github.com/yourusername/project-two'
+          title: 'Flux',
+          image: FluxPic,
+          description: 'An AI-powered advisor that simulates realistic interviews, transcribes answers, and delivers personalized feedback using GPT-4o-mini. Runs in web browsers or on Render for scalable mock interviews.',
+          tags: ['Node.js', 'Javascript', 'Render', 'Supabase'],
+          githubLink: 'https://github.com/NKprogram/HackED2025'
         },
         {
-          title: 'Project Three',
-          image: vueLogo,
-          description: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.',
-          tags: ['Angular', 'JavaScript', 'RxJS', 'MySQL'],
-          githubLink: 'https://github.com/yourusername/project-three'
+          title: 'VisualSortHub',
+          image: SorthubPic,
+          description: 'An interactive site that visualizes how sorting algorithms work, with animations for Merge Sort, Quick Sort, and more. Runs in web browsers and uses sliders to control array size and speed of the sorting process.',
+          tags: ['React', 'JavaScript', 'HTML/CSS', 'Github Pages'],
+          githubLink: 'https://github.com/NKprogram/visualsorthub'
         },
         {
-          title: 'Project Four',
-          image: vueLogo,
-          description: 'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia.',
-          tags: ['Svelte', 'JavaScript', 'SvelteKit', 'PostgreSQL'],
-          githubLink: 'https://github.com/yourusername/project-four'
+          title: 'SocialDistribution',
+          image: SDPic,
+          description: 'A fullstack distributed social network where users share, like, and comment across nodes. Built with Django and Heroku, it syncs GitHub activity to profiles and uses inbox-based REST APIs for federation.',
+          tags: ['Django', 'Python', 'Heroku', 'PostgreSQL'],
+          githubLink: 'https://github.com/NKprogram/SD'
         },
         {
-          title: 'Project Five',
-          image: vueLogo,
-          description: 'Mauris ullamcorper sapien ipsum, ac commodo nisi pulvinar non.',
-          tags: ['Next.js', 'TypeScript', 'GraphQL', 'Prisma'],
-          githubLink: 'https://github.com/yourusername/project-five'
+          title: 'SufferQR',
+          image: SufferQRPic,
+          description: 'A mobile app where users scan QR codes tied to photos and GPS, earning scores and rankings. Built in Java for Android with Firebase, it tracks code activity, maps locations, and shows player stats.',
+          tags: ['XML', 'Java', 'Android SDK', 'Firebase'],
+          githubLink: 'https://github.com/NKprogram/sufferQR'
         },
         {
-          title: 'Project Six',
-          image: vueLogo,
-          description: 'Suspendisse potenti. Morbi tempor, diam eget malesuada dapibus.Suspendisse potenti. Morbi tempor, diam eget malesuada dapibus.Suspendisse potenti. Morbi tempor, diam eget malesuada dapibus.Suspendisse potenti. Morbi tempor, diam eget malesuada dapibus.Suspendisse potenti. Morbi tempor, diam eget malesuada dapibus.',
-          tags: ['Nuxt.js', 'JavaScript', 'Pinia', 'Supabase'],
-          githubLink: 'https://github.com/yourusername/project-six'
+          title: 'Employee2nd',
+          image: Employee2ndPic,
+          description: 'A web-based job tracker that lets users log applications, track statuses, and manage resumes with Google Drive integration. Styled with Tailwind CSS, and deployed via Expo for cross-platform accessibility.',
+          tags: ['Next.js', 'Typscript', 'TailwindCSS', 'MongoDB'],
+          githubLink: 'https://github.com/NKprogram/Employee2nd'
         }
       ],
       cardStyles: Array(6).fill({}),
@@ -184,22 +188,53 @@ export default {
       if (this.selectedCardIndex === index) return;
       this.handleMouseOut(index);
     },
-    // Toggle the card expansion on click.
+    // Toggle the card to show more details.
     toggleCard(index, event) {
-      // gitHub button click should not toggle the card.
       if (event.target.closest('.github-btn')) {
         return;
       }
+      
       // Prevent toggling on mobile devices.
       if (window.innerWidth <= 768) {
         return;
       }
-      this.selectedCardIndex = this.selectedCardIndex === index ? null : index;
+      
+      const wasExpanded = this.selectedCardIndex === index;
+      this.selectedCardIndex = wasExpanded ? null : index;
       this.cardStyles = Array(this.projects.length).fill({});
+      
+      // Handle overlay
+      if (!wasExpanded) {
+        // Create overlay if it doesn't exist
+        if (!document.querySelector('.card-overlay')) {
+          const overlay = document.createElement('div');
+          overlay.className = 'card-overlay';
+          document.body.appendChild(overlay);
+        }
+        
+        // Show overlay
+        document.querySelector('.card-overlay').classList.add('active');
+        
+        // Add click event to close when clicking outside
+        document.querySelector('.card-overlay').onclick = () => {
+          this.closeExpandedCard();
+        };
+      } else {
+        // Hide overlay when closing
+        const overlay = document.querySelector('.card-overlay');
+        if (overlay) {
+          overlay.classList.remove('active');
+        }
+      }
     },
-    
     closeExpandedCard() {
       this.selectedCardIndex = null;
+      
+      // Hide overlay
+      const overlay = document.querySelector('.card-overlay');
+      if (overlay) {
+        overlay.classList.remove('active');
+      }
     }
   },
   mounted() {
@@ -244,6 +279,7 @@ export default {
     });
   }
 };
+
 </script>
 
 <style scoped>
@@ -256,38 +292,48 @@ export default {
   flex-direction: column;
   position: relative;
 }
+
 .content-container {
-  pointer-events: none;
-  max-width: 1200px;
-  width: 90%;
+  pointer-events: none; 
+  max-width: 1400px;
+  width: 92%;
   margin: 0 auto;
   text-align: center;
   color: #fff;
 }
+
 .introduction-title {
-  font-size: 3rem;
-  margin-bottom: 1rem;
+  text-align: center;
+  font-size: 4rem; 
+  margin-bottom: 1.5rem;
   font-family: 'TechnoRace-Italic', sans-serif;
   color: #ffffff;
-  text-shadow: 0 0 10px rgba(139, 233, 253, 0.7);
-  letter-spacing: 2px;
+  text-shadow: 0 0 12px rgba(139, 233, 253, 0.7);
+  letter-spacing: 3px;
 }
 .introduction-subtitle {
-  font-size: 2rem;
+  font-size: 2.5rem; 
   color: rgba(255, 255, 255, 0.7);
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
+  text-align: center;
 }
 .cards-container {
-  pointer-events: none;
+  pointer-events: none; 
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
+  gap: 2.5rem;
 }
 .three-d-wrapper {
   perspective: 1500px;
   position: relative;
   z-index: 1;
+  pointer-events: auto; 
 }
+.three-d-wrapper:has(.card.expanded) {
+  z-index: 10000; 
+  position: relative; 
+}
+
 
 .card {
   pointer-events: auto;
@@ -304,7 +350,7 @@ export default {
     0 0 5px 0px rgba(255, 255, 255, 0),
     0 15px 15px -10px rgba(0, 0, 0, 0.5);
   cursor: pointer;
-  min-height: 380px;
+  min-height: 420px; 
 }
 .card:hover {
   box-shadow:
@@ -319,10 +365,11 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) !important;
-  width: 85%;
-  max-width: 500px;
+  width: 90%;
+  max-width: 600px;
+  min-height: auto; 
   height: auto;
-  z-index: 9999;
+  z-index: 99999;
   box-shadow:
     0 0 30px 8px rgba(255, 255, 255, 0.2),
     0 0 15px 5px rgba(138, 43, 226, 0.4),
@@ -331,15 +378,58 @@ export default {
   animation: expandPulse 2s infinite alternate;
 }
 
+.card-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 9999; 
+}
+
+.card-overlay.active {
+  display: block;
+}
+
+
+.card.expanded .space-theme-background {
+  background: linear-gradient(0deg, rgba(15, 12, 41, 0.95), rgba(30, 30, 30, 0.97));
+}
+
+
+.card.expanded .card-title {
+  font-size: 1.6rem;
+  margin-bottom: 1.2rem;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+}
+
+.card.expanded .card-content {
+  padding: 2rem;
+}
+
 .card.expanded:before {
   opacity: 0 !important;
   background-image: none !important;
   filter: none !important;
 }
 
+.expanded-description {
+  font-size: 1.1rem !important;
+  line-height: 1.6 !important;
+  color: #ffffff !important;
+  margin: 1rem 0 1.5rem !important;
+  text-shadow: 0 0 2px rgba(255, 255, 255, 0.3);
+}
+
+.card.expanded .space-elements {
+  opacity: 0.3; 
+}
+
 .card-image {
   width: 100%;
-  height: 180px;
+  height: 200px; 
   object-fit: cover;
 }
 
@@ -347,7 +437,7 @@ export default {
   position: relative;
   background: linear-gradient(0deg, #0f0c29, #1e1e1e);
   overflow: hidden;
-  min-height: 200px;
+  min-height: 220px;
   display: flex;
   flex-direction: column;
 }
@@ -440,7 +530,7 @@ export default {
   border-radius: 4px;
   padding: 0.25rem 0.6rem;
   font-size: 0.75rem;
-  font-weight: 500;
+  font-weight: 600; 
 }
 .tag.framework {
   background-color: #ff8a00;
@@ -459,15 +549,24 @@ export default {
   color: #1e1e1e;
 }
 
+
+.card.expanded .tag {
+  padding: 0.35rem 0.8rem;
+  font-size: 0.85rem;
+  margin: 0.15rem;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+}
+
 .github-btn {
   position: absolute;
-  bottom: 1rem;
-  left: 1rem;
+  bottom: 1rem; 
+  left: auto;
+  right: 1rem; 
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   overflow: hidden;
   cursor: pointer;
@@ -482,6 +581,7 @@ export default {
   text-decoration: none;
   z-index: 10;
 }
+
 .github-btn:hover {
   transform: scale(1.1);
 }
@@ -496,8 +596,8 @@ export default {
 }
 
 .gh-icon {
-  width: 20px;
-  height: 20px;
+  width: 24px; 
+  height: 24px; 
   z-index: 2;
 }
 
@@ -617,6 +717,16 @@ export default {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+@media screen and (min-width: 1025px) and (max-width: 1440px) {
+  .cards-container {
+    grid-template-columns: repeat(2, 1fr); 
+  }
+}
+@media screen and (min-width: 1441px) {
+  .cards-container {
+    grid-template-columns: repeat(3, 1fr); 
+  }
+}
 
 @keyframes shootingStar {
   0% {
@@ -723,7 +833,7 @@ export default {
     opacity: 0.7;
   }
   60% {
-    background-position: 100% 100%;
+    background-position: 100%;
     opacity: 0.8;
   }
   80% {
