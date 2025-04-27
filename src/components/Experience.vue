@@ -5,7 +5,7 @@
         WORK EXPERIENCE
       </h2>
       <h3 class="introduction-subtitle">
-        Where I've Worked.
+        Where I've Worked
       </h3>
       <div class="experience-wrapper">
         <div class="company-list">
@@ -17,7 +17,10 @@
             @click="selectedIndex = index"
           >
             <div class="planet-container">
-              <div :class="['planet', `planet-${job.planet}`]"></div>
+              <div :class="['planet', `planet-${job.planet}`]">
+                <div class="planet-ring"></div>
+                <div class="planet-glow"></div>
+              </div>
               <span class="planet-name">{{ job.company }} - {{ job.title }}</span>
             </div>
           </div>
@@ -49,30 +52,32 @@
 <script>
 export default {
   name: 'Experience',
-    data() {
+  data() {
     return {
       selectedIndex: 0,
       jobs: [
         {
           title: 'Software Engineer Intern',
-          company: 'NotJustYou',
+          company: 'NotJustYou (Remote)',
+          location: 'Edmonton, AB',
           start: 'Sep 2024',
           end: 'Dec 2024',
           planet: 'earth',
           bullets: [
             'Developed the Medical Wallet feature in React Native, enabling image uploads and health entry tracking, while connecting patient and caregiver profiles securely.',
             'Designed an accessible, calming UI tailored for chronically ill users and caregivers, with a focus on privacy and ethical user experience.',
-            'Automated CI/CD pipelines using GitHub Actions and self-hosted runners, reducing manual deployment time by 30% and streamlining releases.'
+            'Automated CI/CD pipelines using GitHub Actions and self-hosted runners, reducing manual deployment time by 35% and streamlining releases.'
           ]
         },
         {
           title: 'Data Science Intern',
-          company: 'M2M Tech',
+          company: 'M2M Tech (Remote)',
+          location: 'Vancouver, BC',
           start: 'May 2023',
           end: 'Aug 2023',
           planet: 'mars',
           bullets: [
-            'Developed and optimized predictive models for 10K+ records using Python, scikit-learn, and Bokeh, improving the precision of segmentation by 17%.',
+            'Developed and optimized predictive models for over 10,000 records using Python, scikit-learn, and Bokeh, improving the precision of segmentation by 17%.',
             'Created interactive dashboards and visual reports using Pandas, Matplotlib, and Seaborn to analyze trends and support data-driven exploration.',
             'Collaborated with front-end teams to embed machine learning outputs into web interfaces, enabling real-time recommendations and user insights.'
           ]
@@ -80,6 +85,7 @@ export default {
         {
           title: 'Computer Science Mentor',
           company: 'Future Creators',
+          location: 'Edmonton, AB',
           start: 'Jan 2022',
           end: 'Mar 2022',
           planet: 'mercury',
@@ -188,7 +194,7 @@ export default {
 .planet-container {
   display: flex;
   align-items: center;
-  transition: transform 0.3s;
+  transition: transform 0.2s;
 }
 
 .planet {
@@ -197,10 +203,36 @@ export default {
   border-radius: 50%;
   position: absolute;
   left: 2px;
-  transition: all 0.3s ease;
+  transition: all 0.4s ease;
   box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
   background-size: cover;
   background-position: center;
+  z-index: 1;
+}
+
+.planet-ring {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 0px solid rgba(255, 255, 255, 0);
+  box-sizing: border-box;
+  transform: scale(1.2);
+  opacity: 0;
+  transition: all 0.4s ease;
+  z-index: -1;
+}
+
+.planet-glow {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0) 70%);
+  transform: scale(0);
+  opacity: 0;
+  transition: all 0.5s ease;
+  z-index: -2;
 }
 
 .planet-mercury {
@@ -224,9 +256,37 @@ export default {
   font-size: 1.2rem;
 }
 
+/* Active planet styles */
 .company-item.active .planet {
-  transform: scale(1.25);
+  transform: scale(1.25) rotate(360deg);
   box-shadow: 0 0 25px rgba(255, 255, 255, 0.8), 0 0 40px rgba(255, 255, 255, 0.4);
+  animation: pulse 2s infinite;
+}
+
+.company-item.active .planet-ring {
+  border-width: 4px;
+  opacity: 0.7;
+  transform: scale(1.5) rotate(-45deg);
+}
+
+.company-item.active .planet-glow {
+  transform: scale(2.2);
+  opacity: 0.6;
+}
+
+.company-item.active .planet-mercury + .planet-ring {
+  border-color: rgba(200, 200, 200, 0.5);
+  box-shadow: 0 0 10px rgba(200, 200, 200, 0.5);
+}
+
+.company-item.active .planet-earth + .planet-ring {
+  border-color: rgba(75, 147, 255, 0.5);
+  box-shadow: 0 0 10px rgba(75, 147, 255, 0.5);
+}
+
+.company-item.active .planet-mars + .planet-ring {
+  border-color: rgba(206, 74, 74, 0.5);
+  box-shadow: 0 0 10px rgba(206, 74, 74, 0.5);
 }
 
 .company-item.active .planet-name {
@@ -235,8 +295,49 @@ export default {
   font-size: 1.3rem;
 }
 
-.company-item:hover .planet-container {
-  transform: translateX(6px);
+
+.company-item:hover:not(.active) .planet {
+  transform: scale(1.15);
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.7), 0 0 30px rgba(255, 255, 255, 0.3);
+}
+
+.company-item:hover:not(.active) .planet-ring {
+  border-width: 2px;
+  opacity: 0.5;
+  transform: scale(1.4);
+}
+
+.company-item:hover:not(.active) .planet-glow {
+  transform: scale(1.8);
+  opacity: 0.4;
+}
+
+.company-item:hover:not(.active) .planet-mercury + .planet-ring {
+  border-color: rgba(200, 200, 200, 0.4);
+}
+
+.company-item:hover:not(.active) .planet-earth + .planet-ring {
+  border-color: rgba(75, 147, 255, 0.4);
+}
+
+.company-item:hover:not(.active) .planet-mars + .planet-ring {
+  border-color: rgba(206, 74, 74, 0.4);
+}
+
+.company-item:hover:not(.active) .planet-name {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.8), 0 0 40px rgba(255, 255, 255, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.6), 0 0 30px rgba(255, 255, 255, 0.3);
+  }
+  100% {
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.8), 0 0 40px rgba(255, 255, 255, 0.4);
+  }
 }
 
 .company-details {
@@ -342,7 +443,11 @@ export default {
   }
   
   .company-item.active .planet {
-    transform: translateX(-50%) scale(1.25);
+    transform: translateX(-50%) scale(1.25) rotate(360deg);
+  }
+  
+  .company-item:hover:not(.active) .planet {
+    transform: translateX(-50%) scale(1.15);
   }
   
   .planet-container {

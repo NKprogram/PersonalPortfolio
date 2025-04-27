@@ -30,13 +30,13 @@
           <div class="info-column">
             <div class="about-text">
               <div class="about-point">
-                <span class="about-point-text">Final‑year <span class="keyword">Computing Science</span> student at UAlberta, focused on software development and machine learning.</span>
+                <span class="about-point-text">Recent <span class="keyword">Computer Science</span> graduate from UAlberta, focused on software development and machine learning.</span>
               </div>
               <div class="about-point">
                 <span class="about-point-text">Interested in <span class="keyword">problem-solving</span>, <span class="keyword">smart designs</span>, and <span class="keyword">creative fixes</span>.</span>
               </div>
               <div class="about-point">
-                <span class="about-point-text">Built <span class="keyword">full‑stack</span> Webapps, worked on <span class="keyword">data-backed</span> projects, and helped ship tools serving real users.</span>
+                <span class="about-point-text">Built <span class="keyword">full‑stack</span> Webapps, worked on <span class="keyword">data-driven</span> projects, and helped ship tools serving real users.</span>
               </div>
               <div class="about-point">
                 <span class="about-point-text">Looking for a <span class="keyword">software developer</span> role where I can <span class="keyword">learn</span>, <span class="keyword">build</span>, and <span class="keyword">grow</span>.</span>

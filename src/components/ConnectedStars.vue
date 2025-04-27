@@ -24,7 +24,7 @@ const NUM_STARS = {
   desktop: 210    
 };
 
-// Space theme colors
+// Space colors for stars
 const SPACE_COLORS = {
   blueStar: { h: 210, s: 100, l: 70 },     
   redStar: { h: 350, s: 100, l: 70 },      
@@ -33,7 +33,7 @@ const SPACE_COLORS = {
   cyanStar: { h: 180, s: 100, l: 75 }      
 };
 
-// Canvas reference
+// Canvas and context references
 const canvas = ref(null);
 let animationFrameId = null;
 let stars = [];
@@ -104,7 +104,6 @@ function drawLine(ctx, x1, y1, x2, y2, color, width = LINE_WIDTH) {
   ctx.stroke();
 }
 
-
 // Draw a glowing effect around a star
 function drawGlow(ctx, star, arcFactor, outerFactor) {
   ctx.beginPath();
@@ -165,6 +164,9 @@ function drawStars(ctx) {
 
 // Connect stars with a cosmic web effect
 function connectStarToStar(ctx) {
+  // Only connect stars on desktop
+  if (isMobile()) return;
+  
   for (let i = 0; i < stars.length; i++) {
     const starA = stars[i];
     for (let j = i + 1; j < stars.length; j++) {
@@ -181,7 +183,9 @@ function connectStarToStar(ctx) {
 
 // Connect mouse cursor to nearby stars with a cosmic energy effect
 function connectMouseToStars(ctx) {
-  if (!mouse.active) return;
+  // Only connect mouse to stars on desktop
+  if (isMobile() || !mouse.active) return;
+  
   for (const star of stars) {
     const distToMouse = distance(star, mouse);
     if (distToMouse < MOUSE_CONNECTION_RADIUS) {
@@ -265,6 +269,22 @@ function checkStarBoundary(star, maxVal, axis) {
 
 // Update star positions and apply forces
 function update() {
+  // On mobile, only update star opacity for twinkling effect, no movement
+  if (isMobile()) {
+    for (const star of stars) {
+      star.opacity += star.opacityDelta;
+      if (star.opacity > 1) {
+        star.opacity = 1;
+        star.opacityDelta = -star.opacityDelta * Math.random();
+      } else if (star.opacity < 0.5) {
+        star.opacity = 0.5;
+        star.opacityDelta = -star.opacityDelta * Math.random();
+      }
+    }
+    return;
+  }
+  
+  // Desktop update with full movement
   for (const star of stars) {
     if (Math.random() < 0.02) {  
       star.vx += (Math.random() - 0.5) * AUTONOMOUS_MOVEMENT;
@@ -330,6 +350,10 @@ function initStars(width, height) {
   stars = [];
   backgroundStars = [];
   const numStars = isMobile() ? NUM_STARS.mobile : NUM_STARS.desktop;
+  
+  // if mobile, increase the number of background stars
+  const numBackgroundStars = numStars * (isMobile() ? 8 : 5);
+  
   for (let i = 0; i < numStars; i++) {
     let type;
     const rand = Math.random();
@@ -344,8 +368,8 @@ function initStars(width, height) {
     }
     stars.push(createStar(width, height, type));
   }
+  
   // Create background stars (static)
-  const numBackgroundStars = numStars * 5;
   for (let i = 0; i < numBackgroundStars; i++) {
     const colorHSL = getSpaceColorHSL();
     const rgb = hslToRgb(colorHSL.h, colorHSL.s, colorHSL.l);
@@ -361,54 +385,98 @@ function initStars(width, height) {
 
 // Update mouse position from touch events
 function updateMouseFromTouch(e) {
-  e.preventDefault();
+  if (isMobile()) return; // Skip on mobile
+  
+  // Only prevent default on desktop
+  if (!isMobile()) {
+    e.preventDefault();
+  }
+  
   const touch = e.touches[0];
   mouse.x = touch.clientX;
   mouse.y = touch.clientY;
 }
 
-// Touch event handlers for mobile
+// Touch event handlers for desktop only
 function handleTouchStart(e) {
+  if (isMobile()) return; // Skip on mobile
   updateMouseFromTouch(e);
   mouse.active = true;
 }
 
 function handleTouchMove(e) {
+  if (isMobile()) return; // Skip on mobile
   updateMouseFromTouch(e);
 }
 
 function handleTouchEnd() {
+  if (isMobile()) return; // Skip on mobile
   mouse.active = false;
+}
+
+// Set initial canvas size based on window dimensions
+function setCanvasSize() {
+  if (!canvas.value) return;
+  canvas.value.width = window.innerWidth;
+  canvas.value.height = window.innerHeight;
 }
 
 onMounted(() => {
   const c = canvas.value;
   ctx = c.getContext('2d');
 
-  c.width = window.innerWidth;
-  c.height = window.innerHeight;
-
+  setCanvasSize();
   initStars(c.width, c.height);
 
-  c.addEventListener('mousemove', (e) => {
-    mouse.x = e.clientX;
-    mouse.y = e.clientY;
-    mouse.active = true;
-  });
-  
-  c.addEventListener('mouseout', () => {
-    mouse.active = false;
-  });
-  
-  c.addEventListener('touchstart', handleTouchStart, { passive: false });
-  c.addEventListener('touchmove', handleTouchMove, { passive: false });
-  c.addEventListener('touchend', handleTouchEnd);
+  // Only add interactive events on desktop
+  if (!isMobile()) {
+    c.addEventListener('mousemove', (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+      mouse.active = true;
+    });
+    
+    c.addEventListener('mouseout', () => {
+      mouse.active = false;
+    });
+    
+    c.addEventListener('touchstart', handleTouchStart, { passive: isMobile() });
+    c.addEventListener('touchmove', handleTouchMove, { passive: isMobile() });
+    c.addEventListener('touchend', handleTouchEnd);
+  }
 
   // Handle window resize
   window.addEventListener('resize', () => {
-    c.width = window.innerWidth;
-    c.height = window.innerHeight;
+    setCanvasSize();
+    
+    // Keep track of whether we were previously on mobile
+    const wasMobile = isMobile();
+    
     initStars(c.width, c.height);
+    
+    // If switching from desktop to mobile, remove event listeners
+    if (!wasMobile && isMobile()) {
+      c.removeEventListener('touchstart', handleTouchStart);
+      c.removeEventListener('touchmove', handleTouchMove);
+      c.removeEventListener('touchend', handleTouchEnd);
+      mouse.active = false;
+    }
+    // If switching from mobile to desktop, add event listeners
+    else if (wasMobile && !isMobile()) {
+      c.addEventListener('mousemove', (e) => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+        mouse.active = true;
+      });
+      
+      c.addEventListener('mouseout', () => {
+        mouse.active = false;
+      });
+      
+      c.addEventListener('touchstart', handleTouchStart, { passive: false });
+      c.addEventListener('touchmove', handleTouchMove, { passive: false });
+      c.addEventListener('touchend', handleTouchEnd);
+    }
   });
 
   animate();
@@ -420,7 +488,7 @@ onUnmounted(() => {
   }
   
   // Remove event listeners
-  if (canvas.value) {
+  if (canvas.value && !isMobile()) {
     canvas.value.removeEventListener('touchstart', handleTouchStart);
     canvas.value.removeEventListener('touchmove', handleTouchMove);
     canvas.value.removeEventListener('touchend', handleTouchEnd);
@@ -431,6 +499,14 @@ onUnmounted(() => {
 <style scoped>
 canvas {
   background: #000;
-  touch-action: none;
+  touch-action: auto; 
+  pointer-events: none; 
+}
+
+@media (min-width: 769px) {
+  canvas {
+    touch-action: none; 
+    pointer-events: auto; 
+  }
 }
 </style>

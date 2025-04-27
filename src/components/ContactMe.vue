@@ -35,7 +35,7 @@
       </div>
       <!-- Main heading and subtitle -->
       <h2 class="section-heading">GET IN TOUCH</h2>
-      <h3 class="introduction-subtitle">Feel free to reach out.</h3>
+      <h3 class="introduction-subtitle">Feel free to reach out</h3>
       <!-- Contact form using formspree -->
       <form action="https://formspree.io/f/xpwdzajg" method="POST" class="contact-form">
         <div class="form-group">
@@ -51,7 +51,7 @@
           <textarea id="message" name="message" rows="5" placeholder="Your Message" required></textarea>
         </div>
         <button type="submit" class="btn">
-          <strong>Send Message.</strong>
+          <strong>Send Message</strong>
           <div id="container-stars">
             <div id="stars"></div>
           </div>

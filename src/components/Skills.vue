@@ -4,7 +4,7 @@
       <!-- Main section heading using the custom font -->
       <h2 class="section-heading">TECH STACK</h2>
       <!-- Subtitle for the section -->
-      <h3 class="introduction-subtitle">What I Know.</h3>
+      <h3 class="introduction-subtitle">What I Know</h3>
       
       <!-- Programming Languages Section -->
       <p class="category-heading programming-heading">Programming Languages</p>
@@ -107,7 +107,7 @@ export default {
       developerTools: [
         { title: 'Git & GitHub', icon: GitLogo },
         { title: 'Docker', icon: DockerLogo},
-        { title: 'VS code', icon: VisualStudioLogo },
+        { title: 'VSCode', icon: VisualStudioLogo },
         { title: 'Android Studio', icon: AndroidStudioLogo },
         { title: 'Postman', icon: PostmanLogo },
         { title: 'Figma', icon: figmaLogo}

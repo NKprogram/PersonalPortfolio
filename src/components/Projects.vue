@@ -4,7 +4,7 @@
       <!-- Title for the section -->
       <h1 class="introduction-title">PROJECTS</h1>
       <!-- Subtitle for the section -->
-      <h2 class="introduction-subtitle">What I've Made.</h2>
+      <h2 class="introduction-subtitle">What I've Made</h2>
       <div class="cards-container">
         <div
           v-for="(project, index) in projects"
@@ -107,8 +107,8 @@ export default {
         {
           title: 'Flux',
           image: FluxPic,
-          description: 'An AI-powered advisor that simulates realistic interviews, transcribes answers, and delivers personalized feedback using GPT-4o-mini. Runs in web browsers or on Render for scalable mock interviews.',
-          tags: ['Node.js', 'Javascript', 'Render', 'Supabase'],
+          description: 'An AI-powered advisor that simulates realistic interviews, transcribes answers, and delivers personalized feedback using GPT-4o-mini. Runs in web browsers for scalable mock interviews.',
+          tags: ['Node.js', 'JavaScript', 'Render', 'Supabase'],
           githubLink: 'https://github.com/NKprogram/HackED2025'
         },
         {
@@ -136,7 +136,7 @@ export default {
           title: 'Employee2nd',
           image: Employee2ndPic,
           description: 'A web-based job tracker that lets users log applications, track statuses, and manage resumes with Google Drive integration. Styled with Tailwind CSS, and deployed via Expo for cross-platform accessibility.',
-          tags: ['Next.js', 'Typscript', 'TailwindCSS', 'MongoDB'],
+          tags: ['Next.js', 'Typscript', 'Tailwind CSS', 'MongoDB'],
           githubLink: 'https://github.com/NKprogram/Employee2nd'
         }
       ],
