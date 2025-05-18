@@ -1,6 +1,11 @@
 <template>
   <section id="projects" class="projects-section">
     <div class="content-container">
+      <div 
+          v-if="selectedCardIndex !== null" 
+          class="card-overlay" 
+          @click="closeExpandedCard"
+        ></div>
       <!-- Title for the section -->
       <h1 class="introduction-title">PROJECTS</h1>
       <!-- Subtitle for the section -->
@@ -190,53 +195,54 @@ export default {
     },
     // Toggle the card to show more details.
     toggleCard(index, event) {
-      if (event.target.closest('.github-btn')) {
-        return;
-      }
-      
-      // Prevent toggling on mobile devices.
-      if (window.innerWidth <= 768) {
-        return;
-      }
-      
-      const wasExpanded = this.selectedCardIndex === index;
-      this.selectedCardIndex = wasExpanded ? null : index;
-      this.cardStyles = Array(this.projects.length).fill({});
-      
-      // Handle overlay
-      if (!wasExpanded) {
-        // Create overlay if it doesn't exist
-        if (!document.querySelector('.card-overlay')) {
-          const overlay = document.createElement('div');
-          overlay.className = 'card-overlay';
-          document.body.appendChild(overlay);
-        }
-        
-        // Show overlay
-        document.querySelector('.card-overlay').classList.add('active');
-        
-        // Add click event to close when clicking outside
-        document.querySelector('.card-overlay').onclick = () => {
-          this.closeExpandedCard();
-        };
-      } else {
-        // Hide overlay when closing
-        const overlay = document.querySelector('.card-overlay');
-        if (overlay) {
-          overlay.classList.remove('active');
-        }
-      }
-    },
+        if (event.target.closest('.github-btn')) return;
+        if (window.innerWidth <= 768) return;
+
+        const was = this.selectedCardIndex === index;
+        this.selectedCardIndex = was ? null : index;
+        this.cardStyles = Array(this.projects.length).fill({});
+
+        this.$nextTick(() => {
+          const cards = this.$refs.projectCards;
+          const card  = cards[index];
+          if (!card) return;
+
+          const wrapper = card.closest('.three-d-wrapper');
+
+          if (was) {
+            cards.forEach(c => {
+              const w = c.closest('.three-d-wrapper');
+              w.classList.remove('expanded-wrapper');
+              c.classList.remove('animated');
+              void c.offsetWidth;
+              c.classList.add('animated');
+            });
+          } else {
+            wrapper.classList.add('expanded-wrapper');
+            card.classList.remove('animated');
+            card.style.transform = '';         
+            document.querySelector('.card-overlay')?.classList.add('active');
+          }
+        });
+      },
+
     closeExpandedCard() {
-      this.selectedCardIndex = null;
-      
-      // Hide overlay
-      const overlay = document.querySelector('.card-overlay');
-      if (overlay) {
-        overlay.classList.remove('active');
-      }
-    }
-  },
+        if (this.selectedCardIndex === null) return;
+        this.selectedCardIndex = null;
+        document.querySelector('.card-overlay')?.classList.remove('active');
+
+        this.$nextTick(() => {
+          this.$refs.projectCards.forEach(c => {
+            const w = c.closest('.three-d-wrapper');
+            w.classList.remove('expanded-wrapper');
+
+            c.classList.remove('animated');
+            void c.offsetWidth;
+            c.classList.add('animated');
+          });
+        });
+      },
+    },
   mounted() {
     // Add CSS for the rainbow glow effect on the cards.
     const style = document.createElement('style');
@@ -330,10 +336,15 @@ export default {
   pointer-events: auto; 
 }
 .three-d-wrapper:has(.card.expanded) {
-  z-index: 10000; 
-  position: relative; 
+  z-index: 10000;
+  position: relative;
+  transform-style: flat !important;
 }
 
+.expanded-wrapper {
+  perspective: none !important;
+  z-index: 10000 !important;
+}
 
 .card {
   pointer-events: auto;
@@ -364,7 +375,7 @@ export default {
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) !important;
+  transform: translate(-50%, -50%) !important; 
   width: 90%;
   max-width: 600px;
   min-height: auto; 
@@ -376,21 +387,27 @@ export default {
     0 0 25px 2px rgba(70, 179, 246, 0.3);
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   animation: expandPulse 2s infinite alternate;
+  transform-style: flat !important;
+  /* Remove any 3D transforms completely for Chrome compatibility */
+  perspective: none !important;
 }
 
 .card-overlay {
-  display: none;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.7);
-  z-index: 9999; 
+  z-index: 9990; /* Just below expanded card z-index */
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
 }
 
 .card-overlay.active {
-  display: block;
+  opacity: 1;
+  pointer-events: auto;
 }
 
 
