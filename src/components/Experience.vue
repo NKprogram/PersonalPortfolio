@@ -64,9 +64,10 @@ export default {
           end: 'Dec 2024',
           planet: 'earth',
           bullets: [
-            'Developed the Medical Wallet feature in React Native, enabling image uploads and health entry tracking, while connecting patient and caregiver profiles securely.',
-            'Designed an accessible, calming UI tailored for chronically ill users and caregivers, with a focus on privacy and ethical user experience.',
-            'Automated CI/CD pipelines using GitHub Actions and self-hosted runners, reducing manual deployment time by 35% and streamlining releases.'
+            'Engineered a cross-platform Medical Wallet in React Native using Material UI and MongoDB, enabling secure image uploads and health document storage across linked patient–caregiver profiles.',
+            'Designed a privacy-first mobile interface inspired by Headspace and Apple Health, improving usability for chronically ill users through calming UI and intuitive navigation.',
+            'Automated deployment to iOS with Expo, GitHub Actions, and self-hosted runners, reducing manual deployment time by 35% and accelerating release cycles.',
+            'Contributed to the app’s chronic illness support ecosystem by building patient-facing features aligned with ethical UX and privacy-first standards, adopted by 30+ early users.'
           ]
         },
         {
@@ -77,9 +78,9 @@ export default {
           end: 'Aug 2023',
           planet: 'mars',
           bullets: [
-            'Developed and optimized predictive models for over 10,000 records using Python, scikit-learn, and Bokeh, improving the precision of segmentation by 17%.',
-            'Created interactive dashboards and visual reports using Pandas, Matplotlib, and Seaborn to analyze trends and support data-driven exploration.',
-            'Collaborated with front-end teams to embed machine learning outputs into web interfaces, enabling real-time recommendations and user insights.'
+            'Completed 5+ client-focused ML projects through structured training, applying scikit-learn to real-world datasets and developing skills in feature engineering, model tuning, and evaluation.',
+            'Increased segmentation accuracy by 15% using k-means clustering on 10K+ IoT device records, enabling clients to identify distinct user behavior patterns for targeted engagement.',
+            'Delivered model insights through interactive Bokeh dashboards and stakeholder presentations, improving client understanding of data trends and model outputs.'
           ]
         },
         {
@@ -90,9 +91,9 @@ export default {
           end: 'Mar 2022',
           planet: 'mercury',
           bullets: [
-            'Delivered weekly coding workshops focused on beginner-friendly tools and Python-based project development.',
-            'Guided mentees through end-to-end application design, incorporating backend logic, interface layout, and testing.',
-            'Introduced version control and API usage to support clean, modular, and collaborative development practices.'
+            'Taught foundational machine learning through C# based game development, mentoring 15+ students in building interactive games that adapted to player behavior.',
+            'Delivered workshops on AI logic, game loops, and data-driven behaviors, enabling students to implement ML features like pattern recognition and basic reinforcement learning.',
+            'Introduced Git and modular programming practices, helping students structure clean, collaborative codebases and launch playable projects.'
           ]
         },
       ]

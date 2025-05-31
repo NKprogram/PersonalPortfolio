@@ -110,7 +110,7 @@
               </a>
 
               <a
-                href="/NuuradinKoraneResumeSE.pdf"
+                href="/NuuradinKoraneResumeSE1.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 class="cosmic-btn resume-btn"
